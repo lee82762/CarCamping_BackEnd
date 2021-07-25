@@ -8,7 +8,7 @@ public class CarCampingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CarCampingApplication.class, args);
-		
+
 	}
 
 }
