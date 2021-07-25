@@ -68,9 +68,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandlerCustom)
                 .and()
+                 //인증실패시
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPointCustom)
                 .and()
+                //jwt 인증 필터
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                 //로그아웃
+       /*         .logout().logoutUrl("/logout").permitAll()
+                .deleteCookies("JSESSIONID")
+                .deleteCookies(HEADER_NAME)
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);*/
     }
 
     @Override
@@ -85,4 +93,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
+
 }

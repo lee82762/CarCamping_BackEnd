@@ -2,6 +2,7 @@ package com.Hanium.CarCamping.domain.dto.member;
 
 
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.domain.entity.member.Role;
 import lombok.*;
 
 @Getter
@@ -13,6 +14,7 @@ public class createDto {
     private String password;
     private String nickname;
     private Integer point;
+    private Role role;
 
     public Member of(){
         return Member.builder()
@@ -20,7 +22,7 @@ public class createDto {
                 .password(this.password)
                 .nickname(this.nickname)
                 .point(this.point)
-                .role("USER")
+                .role(this.role)
                 .build();
     }
 

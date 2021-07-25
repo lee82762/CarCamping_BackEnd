@@ -1,13 +1,16 @@
 package com.Hanium.CarCamping.domain.entity.member;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -27,7 +30,8 @@ public class Member {
     @ColumnDefault("0")
     private Integer point;
 
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
 
     @Builder
@@ -35,7 +39,7 @@ public class Member {
                   final String password,
                   final String nickname,
                   final Integer point,
-                  final String role
+                  final Role role
                   ) {
         this.email = email;
         this.password = password;

@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = jwtService.resolveToken((HttpServletRequest) servletRequest);
 
         if(token != null && jwtService.isUsable(token)){
+
             Authentication auth = jwtService.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

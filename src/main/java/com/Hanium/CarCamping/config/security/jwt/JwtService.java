@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class JwtService {
     private final UserDetailsServiceImpl userDetailsService;
     private final MemberRepository memberRepository;
 
+    //base64로 인코딩
     @PostConstruct
     protected void init(){
         SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
@@ -42,6 +44,7 @@ public class JwtService {
         Date expireTime = new Date();
         expireTime.setTime(expireTime.getTime() + EXPIRE_TIME);
 
+
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("issueDate", System.currentTimeMillis())     // 현재 시간??
@@ -49,7 +52,8 @@ public class JwtService {
                 .setExpiration(expireTime)                                      //
                 .signWith(SignatureAlgorithm.HS256, generateKey())
                 //직렬화
-                .compact();                                                     // jwt 직렬화
+                .compact();// jwt 직렬화
+
     }
 
     private byte[] generateKey() {
@@ -58,6 +62,10 @@ public class JwtService {
         } catch (UnsupportedEncodingException e) {
             throw new UserDefineException("키를 변환하는 데에 실패하였습니다.");
         }
+    }
+
+    public void saveToken(HttpServletResponse response, String token) {
+        response.setHeader("TOKEN", token);
     }
 
     public boolean isUsable(String token) {

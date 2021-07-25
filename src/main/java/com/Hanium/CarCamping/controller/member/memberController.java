@@ -22,6 +22,7 @@ public class memberController {
 
     @PostMapping("/signIn")
     public String signIn(@RequestBody signInDto signInDto) {
+        System.out.println(signInDto);
         return memberSignInService.signIn(signInDto);
     }
 

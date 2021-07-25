@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
 
-        return new User(member.getEmail(), member.getPassword(), makeGrantedAuthority(member.getRole()));
+        return new User(member.getEmail(), member.getPassword(), makeGrantedAuthority(member.getRole().getValue()));
     }
 
     private List<? extends GrantedAuthority> makeGrantedAuthority(String role) {
