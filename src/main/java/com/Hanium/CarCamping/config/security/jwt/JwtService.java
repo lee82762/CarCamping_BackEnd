@@ -53,7 +53,6 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, generateKey())
                 //직렬화
                 .compact();// jwt 직렬화
-
     }
 
     private byte[] generateKey() {

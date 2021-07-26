@@ -24,6 +24,7 @@ public class MemberSignInService {
         Member member = memberRepository.findByEmail(memberSignInDto.getEmail()).orElseThrow(MemberNotFoundException::new);
         checkPw(memberSignInDto,member);
 
+
         return jwtService.createJwt(member.getEmail());
     }
 

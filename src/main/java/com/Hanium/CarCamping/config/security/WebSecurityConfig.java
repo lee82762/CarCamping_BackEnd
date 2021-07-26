@@ -58,18 +58,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().ignoringAntMatchers("/h2-console/**").disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().formLogin()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-
                 .antMatchers(HttpMethod.POST).permitAll()
                 .antMatchers("/damoim/chat/**").hasRole("USER")
-                .anyRequest().permitAll()//.hasRole("USER")
-                .and()
+                .anyRequest().permitAll()
+
+  /*              .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandlerCustom)
                 .and()
                  //인증실패시
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointCustom)
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointCustom);*/
                 .and()
                 //jwt 인증 필터
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
