@@ -1,4 +1,4 @@
-package com.Hanium.CarCamping.Domain;
+package com.Hanium.CarCamping.domain.entity;
 
 import lombok.Getter;
 

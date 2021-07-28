@@ -1,5 +1,6 @@
-package com.Hanium.CarCamping.Domain;
+package com.Hanium.CarCamping.domain.entity;
 
+import com.Hanium.CarCamping.domain.entity.CampSite;
 import lombok.Getter;
 
 import javax.persistence.*;
