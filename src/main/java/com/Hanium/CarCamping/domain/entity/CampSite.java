@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity;
 
+import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import lombok.Getter;
 
@@ -22,7 +23,7 @@ public class CampSite {
     private String address;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy ="campSite",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "campSite", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
@@ -30,9 +31,11 @@ public class CampSite {
 
     @Column(nullable = false)
     @OneToOne
-    @JoinColumn(name="registrant_id")
+    @JoinColumn(name = "registrant_id")
     private Member registrant;
 
+    @Enumerated(value = EnumType.STRING)
+    private Region region;
 
-
+    private String image;
 }
