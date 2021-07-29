@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity;
 
+import com.Hanium.CarCamping.domain.entity.member.Member;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -21,16 +22,17 @@ public class CampSite {
     private String address;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy ="campSite")
+    @OneToMany(mappedBy ="campSite",cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
     private Float score;
-/*
-    @Column(nullable = false)
-    private User registrant;
 
- */
+    @Column(nullable = false)
+    @OneToOne
+    @JoinColumn(name="registrant_id")
+    private Member registrant;
+
 
 
 }
