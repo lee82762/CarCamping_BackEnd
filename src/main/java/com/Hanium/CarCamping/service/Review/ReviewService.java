@@ -8,14 +8,16 @@ import com.Hanium.CarCamping.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-
+    @Transactional
     public void saveReview(CreateReviewDto createReviewDto, Member writer, CampSite campSite) {
         reviewRepository.save(Review.createReview(createReviewDto, writer,campSite));
     }
@@ -36,10 +38,11 @@ public class ReviewService {
     public Review getReview(Long id) {
         return reviewRepository.getById(id);
     }
-
+    @Transactional
     public void upReview(Long id) {
         reviewRepository.getById(id).upRecommend();
     }
+    @Transactional
     public void downReview(Long id) {
         reviewRepository.getById(id).downRecommend();
     }
