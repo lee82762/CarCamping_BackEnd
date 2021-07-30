@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity;
 
+<<<<<<< HEAD
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import lombok.Getter;
@@ -11,10 +12,27 @@ import java.util.Set;
 
 @Entity
 @Getter
+=======
+import com.Hanium.CarCamping.domain.entity.member.Member;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+>>>>>>> d2162bc... security 로그인/회원가입/회원 수정
 public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="review_id")
     private Long review_id;
+<<<<<<< HEAD
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,6 +40,12 @@ public class Review {
     private Member writer;
 
 
+=======
+    /*
+        @Column(nullable = false)
+        private User writer;
+     */
+>>>>>>> d2162bc... security 로그인/회원가입/회원 수정
     @Column(nullable = false)
     private String title;
 
@@ -29,9 +53,12 @@ public class Review {
     private String contents;
 
     @Column(nullable = false)
+<<<<<<< HEAD
     private Float score;
 
     @Column(nullable = false)
+=======
+>>>>>>> d2162bc... security 로그인/회원가입/회원 수정
     private LocalDateTime date;
 
 
@@ -39,6 +66,7 @@ public class Review {
     @JoinColumn(name="campsite_id")
     private CampSite campSite;
 
+<<<<<<< HEAD
     @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL)
     private Set<Member> participants = new HashSet<>();
 
@@ -72,3 +100,14 @@ public class Review {
         this.recommend-=1;
     }
 }
+=======
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
+
+    private Integer recommend;
+
+
+}
+>>>>>>> d2162bc... security 로그인/회원가입/회원 수정
