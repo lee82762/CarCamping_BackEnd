@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity.member;
 
+import com.Hanium.CarCamping.domain.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,6 +36,8 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    private List<Review> reviewList = new ArrayList<>();
 
     @Builder
     public Member(final String email,
@@ -40,12 +45,13 @@ public class Member {
                   final String nickname,
                   final Integer point,
                   final Role role
-                  ) {
+    ) {
+
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.point=point;
-        this.role=role;
+        this.point = point;
+        this.role = role;
 
     }
 }
