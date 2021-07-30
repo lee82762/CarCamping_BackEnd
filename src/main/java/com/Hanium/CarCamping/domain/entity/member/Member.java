@@ -31,7 +31,7 @@ public class Member {
     private Integer point;
 
     @Enumerated(value = EnumType.STRING)
-    private com.Hanium.CarCamping.domain.entity.member.Role role;
+    private Role role;
 
 
     @Builder
@@ -39,7 +39,7 @@ public class Member {
                   final String password,
                   final String nickname,
                   final Integer point,
-                  final com.Hanium.CarCamping.domain.entity.member.Role role
+                  final Role role
                   ) {
         this.email = email;
         this.password = password;
