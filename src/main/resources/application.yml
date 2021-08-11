@@ -1,12 +1,19 @@
 spring:
-  h2:
-    console:
-      enabled: true
-  profiles:
-    active: local
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
+    url: jdbc:mariadb://meedding.ctoilrrq7tkn.ap-northeast-2.rds.amazonaws.com/tmp
+    username: junbeom_kang
+    password: wnsqja12
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+logging.level:
+  web: debug
+  org.hibernate.SQL: #debug

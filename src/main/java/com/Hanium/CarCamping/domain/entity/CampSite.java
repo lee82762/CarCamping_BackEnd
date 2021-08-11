@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class CampSite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +34,7 @@ public class CampSite {
     @Column(nullable = false)
     private Float score;
 
-    @Column(nullable = false)
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "registrant_id")
     private Member registrant;
 
@@ -51,14 +49,15 @@ public class CampSite {
 
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
-        return CampSite.builder().name(createCampSiteDto.getName())
-                .address(createCampSiteDto.getAddress())
-                .score(createCampSiteDto.getScore())
-                .explanation(createCampSiteDto.getExplanation())
-                .videoLink(createCampSiteDto.getVideoLink())
-                .image(createCampSiteDto.getImage())
-                .region(Region.valueOf(createCampSiteDto.getRegion()))
-                .registrant(member)
-                .build();
+        CampSite campSite = new CampSite();
+        campSite.name= createCampSiteDto.getName();
+        campSite.address= createCampSiteDto.getAddress();
+        campSite.score= campSite.getScore();
+        campSite.region=Region.valueOf(createCampSiteDto.getRegion());
+        campSite.explanation= createCampSiteDto.getExplanation();
+        campSite.image= createCampSiteDto.getImage();
+        campSite.videoLink= campSite.getVideoLink();
+        campSite.registrant=member;
+        return campSite;
     }
 }
