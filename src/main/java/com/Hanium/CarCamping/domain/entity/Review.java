@@ -1,7 +1,6 @@
 package com.Hanium.CarCamping.domain.entity;
 
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
-import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import lombok.Getter;
 
@@ -17,7 +16,7 @@ public class Review {
     @Column(name="review_id")
     private Long review_id;
 
-    @Column(nullable = false)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="writer_id")
     private Member writer;
@@ -35,7 +34,7 @@ public class Review {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @Column(nullable = false)
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="campsite_id")
     private CampSite campSite;
