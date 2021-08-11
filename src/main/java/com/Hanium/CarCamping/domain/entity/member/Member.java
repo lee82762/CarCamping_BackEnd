@@ -35,6 +35,7 @@ public class Member {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    //수정
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
