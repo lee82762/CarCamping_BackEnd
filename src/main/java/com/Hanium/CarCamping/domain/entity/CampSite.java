@@ -3,6 +3,7 @@ package com.Hanium.CarCamping.domain.entity;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class CampSite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +29,14 @@ public class CampSite {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+
     @OneToMany(mappedBy = "campSite", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
     private Float score;
 
-    @Column(nullable = false)
+
     @OneToOne
     @JoinColumn(name = "registrant_id")
     private Member registrant;
