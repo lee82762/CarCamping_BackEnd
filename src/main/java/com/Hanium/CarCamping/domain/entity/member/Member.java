@@ -32,6 +32,7 @@ public class Member {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    //수정
 
 
     @Builder
