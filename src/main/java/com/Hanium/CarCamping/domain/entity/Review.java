@@ -20,7 +20,7 @@ public class Review {
     @Column(name="review_id")
     private Long review_id;
 
-    @Column(nullable = false)
+   
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="writer_id")
     private Member writer;
@@ -38,7 +38,6 @@ public class Review {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @Column(nullable = false)
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="campsite_id")
     private CampSite campSite;

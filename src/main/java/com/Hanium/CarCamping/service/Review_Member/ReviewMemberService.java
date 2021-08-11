@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,13 +21,14 @@ public class ReviewMemberService {
     private final ReviewMemberRepository reviewMemberRepository;
 
     public void createReviewMember(Review review, Member member) {
-        Optional<Review_Member> result = reviewMemberRepository.findByReview_idAndAndMember_id(review, member);
-        if (result.isEmpty()) {
+        if (reviewMemberRepository.findByReview_idAndMember_id(review.getReview_id(), member.getId()).size()==0) {
             reviewMemberRepository.save(Review_Member.createReview_Member(review, member));
         } else {
             throw new AlreadyParticipateException();
         }
     }
+
+
 
 
 }
