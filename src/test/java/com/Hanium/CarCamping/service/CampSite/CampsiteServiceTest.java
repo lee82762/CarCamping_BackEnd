@@ -54,12 +54,10 @@ class CampsiteServiceTest {
         campsiteService.saveCampSite(setUpCampSite("안양시 차박지", 5F),member);
         campsiteService.saveCampSite(setUpCampSite("수원시 차박지", 3F),member);
         campsiteService.saveCampSite(setUpCampSite("파주시 차박지", 4F),member);
-        System.out.println("1");
         //when
         List<CampSite> byRegion = campsiteService.findByRegion(경기도);
         CampSite result1 = campsiteService.findByName("안양시 차박지");
         CampSite result2 = campsiteService.findById(result1.getCampsite_id());
-        System.out.println("2");
         //then
         assertThat(result1).isEqualTo(result2);
         assertThat(byRegion.size()).isEqualTo(3);
