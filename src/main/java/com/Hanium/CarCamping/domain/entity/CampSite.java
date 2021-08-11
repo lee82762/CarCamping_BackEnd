@@ -52,11 +52,11 @@ public class CampSite {
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
         campSite.address= createCampSiteDto.getAddress();
-        campSite.score= campSite.getScore();
+        campSite.score= createCampSiteDto.getScore();
         campSite.region=Region.valueOf(createCampSiteDto.getRegion());
         campSite.explanation= createCampSiteDto.getExplanation();
         campSite.image= createCampSiteDto.getImage();
-        campSite.videoLink= campSite.getVideoLink();
+        campSite.videoLink= createCampSiteDto.getVideoLink();
         campSite.registrant=member;
         return campSite;
     }

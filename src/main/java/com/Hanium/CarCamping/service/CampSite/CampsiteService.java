@@ -27,10 +27,15 @@ public class CampsiteService {
         return campSiteRepository.getById(id);
     }
     public List<CampSite> findByRegion(Region region) {
+        System.out.println(region.name());
         return campSiteRepository.findByRegion(region);
     }
 
     public CampSite findByName(String name) {
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
+    }
+    public List<CampSite> getAllCampSiteList() {
+        return
+                campSiteRepository.findAll();
     }
 }
