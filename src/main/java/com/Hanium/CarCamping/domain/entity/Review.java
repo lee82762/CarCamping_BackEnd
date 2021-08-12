@@ -1,9 +1,10 @@
 package com.Hanium.CarCamping.domain.entity;
 
-<<<<<<< HEAD
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,27 +13,11 @@ import java.util.Set;
 
 @Entity
 @Getter
-=======
-import com.Hanium.CarCamping.domain.entity.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
->>>>>>> d2162bc... security 로그인/회원가입/회원 수정
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="review_id")
     private Long review_id;
-<<<<<<< HEAD
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,12 +25,6 @@ public class Review {
     private Member writer;
 
 
-=======
-    /*
-        @Column(nullable = false)
-        private User writer;
-     */
->>>>>>> d2162bc... security 로그인/회원가입/회원 수정
     @Column(nullable = false)
     private String title;
 
@@ -53,12 +32,9 @@ public class Review {
     private String contents;
 
     @Column(nullable = false)
-<<<<<<< HEAD
     private Float score;
 
     @Column(nullable = false)
-=======
->>>>>>> d2162bc... security 로그인/회원가입/회원 수정
     private LocalDateTime date;
 
 
@@ -66,9 +42,8 @@ public class Review {
     @JoinColumn(name="campsite_id")
     private CampSite campSite;
 
-<<<<<<< HEAD
     @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL)
-    private Set<Member> participants = new HashSet<>();
+    private Set<Review_Member> participants = new HashSet<>();
 
     private Integer recommend;
 
@@ -93,21 +68,20 @@ public class Review {
         review.setWriter(writer);
         return review;
     }
-    public void upRecommend() {
-        this.recommend+=1;
+    public void changeRecommend(int i) {
+        this.recommend+=i;
     }
-    public void downRecommend() {
-        this.recommend-=1;
+    @Override
+    public String toString() {
+        return "Review{" +
+                "review_id=" + review_id +
+                ", writer=" + writer.getNickname() +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", score=" + score +
+                ", date=" + date +
+                ", campSite=" + campSite.getName() +
+                ", recommend=" + recommend +
+                '}';
     }
 }
-=======
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    private Member member;
-
-    private Integer recommend;
-
-
-}
->>>>>>> d2162bc... security 로그인/회원가입/회원 수정

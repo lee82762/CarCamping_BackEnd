@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,14 +37,9 @@ public class ReviewService {
     public Review getReview(Long id) {
         return reviewRepository.getById(id);
     }
-    @Transactional
-    public void upReview(Long id) {
-        reviewRepository.getById(id).upRecommend();
-    }
-    @Transactional
-    public void downReview(Long id) {
-        reviewRepository.getById(id).downRecommend();
-    }
+
+
+
 
 
 

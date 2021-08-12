@@ -1,8 +1,10 @@
 package com.Hanium.CarCamping.domain.dto.campsite;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CreateCampSiteDto {
 
     private String name;
