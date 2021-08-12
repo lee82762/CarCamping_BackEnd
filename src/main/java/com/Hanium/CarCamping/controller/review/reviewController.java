@@ -11,7 +11,6 @@ import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import com.Hanium.CarCamping.service.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

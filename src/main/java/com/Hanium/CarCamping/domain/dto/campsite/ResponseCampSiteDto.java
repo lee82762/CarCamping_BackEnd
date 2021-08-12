@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class ResponseCampSiteDto {
     private Long campsite_id;
     private String name;
