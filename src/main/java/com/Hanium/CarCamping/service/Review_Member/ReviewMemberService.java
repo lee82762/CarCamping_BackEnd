@@ -20,12 +20,15 @@ public class ReviewMemberService {
     private final ReviewService reviewService;
     private final ReviewMemberRepository reviewMemberRepository;
 
-    public void createReviewMember(Review review, Member member) {
+    public void createReviewMember(Review review, Member member,int i) {
         if (reviewMemberRepository.findByReview_idAndMember_id(review.getReview_id(), member.getId()).size()==0) {
-            reviewMemberRepository.save(Review_Member.createReview_Member(review, member));
+            reviewMemberRepository.save(Review_Member.createReview_Member(review, member,i));
         } else {
             throw new AlreadyParticipateException();
         }
+    }
+    public List<Review_Member> findByReviewAndMember(Review review,Member member) {
+        return reviewMemberRepository.findByReview_idAndMember_id(review.getReview_id(), member.getId());
     }
 
 

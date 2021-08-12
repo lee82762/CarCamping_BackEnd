@@ -20,12 +20,12 @@ public class Review_MemberController {
     public void upReview(@RequestParam("token") String token, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
         Member member = jwtService.findMemberByToken(token);
-        reviewMemberService.createReviewMember(review,member);
+        reviewMemberService.createReviewMember(review,member,1);
     }
     @GetMapping("/review/{id}/down")
     public void downReview(@RequestParam("token") String token, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
         Member member = jwtService.findMemberByToken(token);
-        reviewMemberService.createReviewMember(review,member);
+        reviewMemberService.createReviewMember(review,member,-1);
     }
 }

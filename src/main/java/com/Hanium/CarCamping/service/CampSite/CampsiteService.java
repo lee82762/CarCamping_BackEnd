@@ -19,8 +19,9 @@ public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
 
     @Transactional
-    public void saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
-        campSiteRepository.save(CampSite.createCampSite(createCampSiteDto,member));
+    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
+        CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member));
+        return save.getCampsite_id();
     }
 
     public CampSite findById(Long id) {
