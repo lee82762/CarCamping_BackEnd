@@ -19,18 +19,24 @@ public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
 
     @Transactional
-    public void saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
-        campSiteRepository.save(CampSite.createCampSite(createCampSiteDto,member));
+    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
+        CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member));
+        return save.getCampsite_id();
     }
 
     public CampSite findById(Long id) {
         return campSiteRepository.getById(id);
     }
     public List<CampSite> findByRegion(Region region) {
+        System.out.println(region.name());
         return campSiteRepository.findByRegion(region);
     }
 
     public CampSite findByName(String name) {
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
+    }
+    public List<CampSite> getAllCampSiteList() {
+        return
+                campSiteRepository.findAll();
     }
 }

@@ -17,8 +17,9 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     @Transactional
-    public void saveReview(CreateReviewDto createReviewDto, Member writer, CampSite campSite) {
-        reviewRepository.save(Review.createReview(createReviewDto, writer,campSite));
+    public Long saveReview(CreateReviewDto createReviewDto, Member writer, CampSite campSite) {
+        Review save = reviewRepository.save(Review.createReview(createReviewDto, writer, campSite));
+        return save.getReview_id();
     }
 
     public List<Review> getCampSiteReviewByDateDESC(Long campSite_id) {
@@ -38,10 +39,10 @@ public class ReviewService {
         return reviewRepository.getById(id);
     }
 
-
-
-
-
-
-
+    public List<Review> getAllReview() {
+        return reviewRepository.findAll();
+    }
+    public List<Review> findByCampSite(Long campsite_id){
+        return reviewRepository.findReviewByCampSite(campsite_id);
+    }
 }

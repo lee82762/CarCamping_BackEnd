@@ -65,7 +65,24 @@ public class Review {
         review.setWriter(writer);
         return review;
     }
-    public void changeRecommend(int i){
+    public void changeRecommend(int i) {
         this.recommend+=i;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "review_id=" + review_id +
+                ", writer=" + writer.getNickname() +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", score=" + score +
+                ", date=" + date +
+                ", campSite=" + campSite.getName() +
+                ", recommend=" + recommend +
+                '}';
+    }
+
+    }
+
 }
