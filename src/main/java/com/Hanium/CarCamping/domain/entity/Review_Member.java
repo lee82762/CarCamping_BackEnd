@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+//충돌 확인
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
