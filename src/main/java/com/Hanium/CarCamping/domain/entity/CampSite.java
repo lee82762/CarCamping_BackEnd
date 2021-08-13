@@ -49,6 +49,7 @@ public class CampSite {
 
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
+
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
         campSite.address= createCampSiteDto.getAddress();
@@ -59,5 +60,6 @@ public class CampSite {
         campSite.videoLink= createCampSiteDto.getVideoLink();
         campSite.registrant=member;
         return campSite;
+
     }
 }
