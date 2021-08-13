@@ -28,4 +28,5 @@ public class Review_MemberController {
         Member member = jwtService.findMemberByToken(token);
         reviewMemberService.createReviewMember(review,member,-1);
     }
+
 }

@@ -40,7 +40,7 @@ public class Review {
     private CampSite campSite;
 
     @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL)
-    private Set<Member> participants = new HashSet<>();
+    private Set<Review_Member> participants = new HashSet<>();
 
     private Integer recommend;
 
@@ -65,7 +65,6 @@ public class Review {
         review.setWriter(writer);
         return review;
     }
-
     public void changeRecommend(int i) {
         this.recommend+=i;
     }
@@ -82,6 +81,8 @@ public class Review {
                 ", campSite=" + campSite.getName() +
                 ", recommend=" + recommend +
                 '}';
+    }
+
     }
 
 }
