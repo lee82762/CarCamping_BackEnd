@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+//충돌 확인
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review_Member extends Member {
+public class Review_Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long review_member_id;
@@ -35,4 +35,5 @@ public class Review_Member extends Member {
         this.review_id=review;
         review.getParticipants().add(this);
     }
+
 }
