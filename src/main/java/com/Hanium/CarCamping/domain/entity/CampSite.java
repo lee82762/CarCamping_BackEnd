@@ -52,14 +52,17 @@ public class CampSite {
 
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
-        return CampSite.builder().name(createCampSiteDto.getName())
-                .address(createCampSiteDto.getAddress())
-                .score(createCampSiteDto.getScore())
-                .explanation(createCampSiteDto.getExplanation())
-                .videoLink(createCampSiteDto.getVideoLink())
-                .image(createCampSiteDto.getImage())
-                .region(Region.valueOf(createCampSiteDto.getRegion()))
-                .registrant(member)
-                .build();
+     
+        CampSite campSite = new CampSite();
+        campSite.name= createCampSiteDto.getName();
+        campSite.address= createCampSiteDto.getAddress();
+        campSite.score= createCampSiteDto.getScore();
+        campSite.region=Region.valueOf(createCampSiteDto.getRegion());
+        campSite.explanation= createCampSiteDto.getExplanation();
+        campSite.image= createCampSiteDto.getImage();
+        campSite.videoLink= createCampSiteDto.getVideoLink();
+        campSite.registrant=member;
+        return campSite;
+
     }
 }

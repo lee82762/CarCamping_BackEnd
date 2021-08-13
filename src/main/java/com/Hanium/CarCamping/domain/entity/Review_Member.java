@@ -23,10 +23,11 @@ public class Review_Member extends Member {
     @JoinColumn(name="member_id")
     private Member member_id;
 
-    public static Review_Member createReview_Member(Review review, Member member) {
+    public static Review_Member createReview_Member(Review review, Member member,int i) {
         Review_Member review_member = new Review_Member();
         review_member.setReview_id(review);
         review_member.member_id=member;
+        review.changeRecommend(i);
         return review_member;
     }
 
