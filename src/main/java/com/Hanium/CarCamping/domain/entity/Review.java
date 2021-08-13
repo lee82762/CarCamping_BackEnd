@@ -1,11 +1,8 @@
 package com.Hanium.CarCamping.domain.entity;
 
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
-import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,13 +11,12 @@ import java.util.Set;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="review_id")
     private Long review_id;
 
-   
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="writer_id")
     private Member writer;
@@ -38,12 +34,13 @@ public class Review {
     @Column(nullable = false)
     private LocalDateTime date;
 
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="campsite_id")
     private CampSite campSite;
 
     @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL)
-    private Set<Review_Member> participants = new HashSet<>();
+    private Set<Member> participants = new HashSet<>();
 
     private Integer recommend;
 
