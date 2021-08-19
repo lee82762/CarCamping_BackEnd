@@ -112,7 +112,24 @@ class ReviewServiceTest {
             System.out.println(review1);
         }
     }
+    @Test
+    public void 리뷰삭제_테스트() throws Exception {
+        //given
+        Member member1 = memberRepository.findByNickname("차박러1").orElseThrow(NoSuchMemberException::new);
+        Member member2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        CampSite campsite1 = campsiteService.findByName("안양시 차박지");
+        CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
+        Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
+        //when
+        System.out.println(reviewService.getAllReview().size());
+        reviewService.deleteReview(member1.getEmail(),review_id);
+        System.out.println(reviewService.getAllReview().size());
 
+
+        //then
+        assertThat(reviewService.getAllReview().size()).isEqualTo(0);
+
+    }
 
 
 

@@ -68,4 +68,11 @@ public class reviewController {
         jwtService.isUsable(token);
         return responseService.getSingleResult(ResponseReviewDto.convertToReviewDto(reviewService.getReview(review_id)));
     }
+
+    @DeleteMapping("campingReview/{review_id}")
+    public Result deleteReview(@RequestParam("token") String token, @PathVariable Long review_id) {
+        jwtService.isUsable(token);
+        reviewService.deleteReview(jwtService.findEmailByJwt(token),review_id);
+        return responseService.getSuccessResult();
+    }
 }
