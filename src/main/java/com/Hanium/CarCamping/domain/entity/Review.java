@@ -39,7 +39,7 @@ public class Review {
     @JoinColumn(name="campsite_id")
     private CampSite campSite;
 
-    @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "review_id",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Review_Member> participants = new HashSet<>();
 
     private Integer recommend;

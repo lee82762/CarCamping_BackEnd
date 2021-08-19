@@ -36,7 +36,7 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer",orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
 
     @Builder

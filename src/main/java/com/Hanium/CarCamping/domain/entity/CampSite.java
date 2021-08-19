@@ -27,7 +27,7 @@ public class CampSite {
     private String address;
 
 
-    @OneToMany(mappedBy = "campSite", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "campSite",orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
