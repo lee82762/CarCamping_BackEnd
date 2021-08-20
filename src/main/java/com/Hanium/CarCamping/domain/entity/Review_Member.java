@@ -33,7 +33,15 @@ public class Review_Member {
 
     public void setReview_id(Review review) {
         this.review_id=review;
-        review.getParticipants().add(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Review_Member m=(Review_Member)o;
+        if (this.member_id.getId().equals(m.member_id.getId()) && this.review_id.getReview_id().equals(m.review_id.getReview_id())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.Hanium.CarCamping.service.Review;
 
 import com.Hanium.CarCamping.Exception.NoSuchMemberException;
+import com.Hanium.CarCamping.Exception.NotReviewWriterException;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.dto.member.createDto;
 import com.Hanium.CarCamping.domain.dto.member.getDto;
@@ -121,13 +122,24 @@ class ReviewServiceTest {
         CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
         Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
         //when
-        System.out.println(reviewService.getAllReview().size());
         reviewService.deleteReview(member1.getEmail(),review_id);
-        System.out.println(reviewService.getAllReview().size());
-
 
         //then
         assertThat(reviewService.getAllReview().size()).isEqualTo(0);
+
+    }
+    @Test
+    public void 리뷰작성자가_아닐때_테스트() throws Exception {
+        Member member1 = memberRepository.findByNickname("차박러1").orElseThrow(NoSuchMemberException::new);
+        Member member2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        CampSite campsite1 = campsiteService.findByName("안양시 차박지");
+        CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
+        Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
+        //when
+        NotReviewWriterException e = assertThrows(NotReviewWriterException.class, () -> reviewService.deleteReview(member2.getEmail(), review_id));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("리뷰 작성자가 아닙니다");
 
     }
 
