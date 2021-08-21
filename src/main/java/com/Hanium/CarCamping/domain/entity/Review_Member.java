@@ -44,4 +44,12 @@ public class Review_Member {
             return false;
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int PRIME=31;
+        int result=1;
+        result= (int) (review_id.getReview_id()+member_id.getId());
+        return result;
+    }
 }

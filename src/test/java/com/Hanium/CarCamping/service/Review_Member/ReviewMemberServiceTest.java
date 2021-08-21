@@ -87,23 +87,10 @@ class ReviewMemberServiceTest {
         //when
 
         Long aLong = reviewMemberService.create(reviewList.get(0), m2, 1);
-
-        Long aLong1 = reviewMemberService.create(reviewList.get(0), m2, 1);
-        Review_Member byId = reviewMemberRepository.findById(aLong).orElseThrow();
-        Review_Member byId1 = reviewMemberRepository.findById(aLong1).orElseThrow();
-        System.out.println(byId.getReview_member_id());
-        System.out.println(byId.getMember_id());
-        System.out.println(byId.getReview_id());
-        System.out.println(byId1.getReview_member_id());
-        System.out.println(byId1.getMember_id());
-        System.out.println(byId1.getReview_id());
-        System.out.println(byId.hashCode());
-        System.out.println(byId1.hashCode());
-
-        //AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.create(reviewList.get(0),m2,1));
+        AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.create(reviewList.get(0),m2,1));
 
         //then
-        //assertThat(e.getMessage()).isEqualTo("이미 평가한 리뷰입니다");
+        assertThat(e.getMessage()).isEqualTo("이미 평가한 리뷰입니다");
     }
     @Test
     public void 나의리뷰일때() throws Exception {
