@@ -28,7 +28,7 @@ public class CampSite {
 
 
 
-    @OneToMany(mappedBy = "campSite")
+    @OneToMany(mappedBy = "campSite",orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
