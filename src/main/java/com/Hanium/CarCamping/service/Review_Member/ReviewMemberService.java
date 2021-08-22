@@ -41,5 +41,8 @@ public Long createReviewMember(Review review, Member member, int i) {
     public List<Review_Member> findByReviewAndMember(Review review,Member member) {
         return reviewMemberRepository.findByReview_idAndMember_id(review.getReview_id(), member.getId());
     }
+    public List<Review_Member> getAll() {
+        return reviewMemberRepository.findAll();
+    }
 
 }

@@ -105,14 +105,32 @@ class ReviewMemberServiceTest {
         assertThat(e.getMessage()).isEqualTo("자신의 리뷰는 추천할 수 없습니다");
     }
     @Test
-    public void 고아객체삭제_테스트() throws Exception {
+    public void 고아객체_리뷰삭제될때() throws Exception {
         //given
-
-
+        Member m2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        CampSite campsite = campsiteService.findByName("안양시 차박지");
+        List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
         //when
-
-
+        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        reviewService.deleteReview(reviewList.get(0).getWriter().getEmail(),reviewList.get(0).getReview_id());
         //then
+        assertThat(reviewMemberService.getAll().size()).isEqualTo(0);
+
+    }
+    @Test
+    public void 고아객체_차박지삭제될때() throws Exception {
+        //given
+        Member m1 = memberRepository.findByNickname("차박러1").orElseThrow(NoSuchMemberException::new);
+        Member m2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        CampSite campsite = campsiteService.findByName("안양시 차박지");
+        List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
+        //when
+        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        campsiteService.deleteCampSite(m1.getId(),campsite.getCampsite_id());
+        //then
+        assertThat(reviewService.getAllReview().size()).isEqualTo(0);
+        assertThat(campsiteService.getAllCampSiteList().size()).isEqualTo(0);
+        assertThat(reviewMemberService.getAll().size()).isEqualTo(0);
 
     }
 

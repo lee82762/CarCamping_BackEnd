@@ -10,7 +10,9 @@ import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
+import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.CampSite.CampsiteService;
+import com.Hanium.CarCamping.service.Review_Member.ReviewMemberService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +33,8 @@ class ReviewServiceTest {
     @Autowired CampsiteService campsiteService;
     @Autowired MemberRepository memberRepository;
     @Autowired MemberCreateService memberCreateService;
+    @Autowired ReviewMemberService reviewMemberService;
+    @Autowired ReviewRepository reviewRepository;
 
     @BeforeEach
     public void setUpMemberAndCampSite() {
@@ -140,6 +144,50 @@ class ReviewServiceTest {
 
         //then
         assertThat(e.getMessage()).isEqualTo("리뷰 작성자가 아닙니다");
+
+    }
+    @Test
+    public void 리뷰탑3_테스트() throws Exception {
+        //given
+        Member member1 = memberRepository.findByNickname("차박러1").orElseThrow(NoSuchMemberException::new);
+        Member member2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        Member member3 = setUpMember("testerr@naver.com", "차박러3");
+        Member member4 = setUpMember("testerrr@naver.com", "차박러4");
+
+        CampSite campsite1 = campsiteService.findByName("안양시 차박지");
+        CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
+        CreateReviewDto reviewDto1 = setUpReviewDto("싫어요", 1.0f);
+        CreateReviewDto reviewDto2 = setUpReviewDto("중간이야", 3.0f);
+        CreateReviewDto reviewDto3 = setUpReviewDto("괜찮아요", 4.0f);
+
+        Long review_id1 = reviewService.saveReview(reviewDto, member1, campsite1);
+        Long review_id2 = reviewService.saveReview(reviewDto1, member1, campsite1);
+        Long review_id3 = reviewService.saveReview(reviewDto2, member1, campsite1);
+        Long review_id4 = reviewService.saveReview(reviewDto3, member1, campsite1);
+
+        Review review1 = reviewRepository.getById(review_id1);
+        Review review2 = reviewRepository.getById(review_id2);
+        Review review3 = reviewRepository.getById(review_id3);
+        Review review4 = reviewRepository.getById(review_id4);
+
+        //when
+        reviewMemberService.createReviewMember(review2,member2,1);
+        reviewMemberService.createReviewMember(review2,member3,1);
+        reviewMemberService.createReviewMember(review2,member4,1);
+        reviewMemberService.createReviewMember(review1,member3,-1);
+        reviewMemberService.createReviewMember(review1,member4,-1);
+        reviewMemberService.createReviewMember(review3,member2,1);
+        reviewMemberService.createReviewMember(review3,member3,1);
+        reviewMemberService.createReviewMember(review4,member2,-1);
+        reviewMemberService.createReviewMember(review4,member3,1);
+        reviewMemberService.createReviewMember(review4,member4,1);
+
+
+        List<Review> reviews = reviewService.mostRecommendedTop3Review(campsite1);
+        //then
+        assertThat(reviews.get(0).getRecommend()).isEqualTo(3);
+        assertThat(reviews.get(1).getRecommend()).isEqualTo(2);
+        assertThat(reviews.get(2).getRecommend()).isEqualTo(1);
 
     }
 

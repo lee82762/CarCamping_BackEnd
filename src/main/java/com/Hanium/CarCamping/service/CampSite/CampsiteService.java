@@ -2,6 +2,7 @@ package com.Hanium.CarCamping.service.CampSite;
 
 import com.Hanium.CarCamping.Exception.DuplicateCampSiteException;
 import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
+import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
@@ -46,5 +47,14 @@ public class CampsiteService {
     public List<CampSite> getAllCampSiteList() {
         return
                 campSiteRepository.findAll();
+    }
+    @Transactional
+    public void deleteCampSite(Long member_id,Long campSite_id) {
+        CampSite campSite = campSiteRepository.findById(campSite_id).orElseThrow(NoSuchCampSiteException::new);
+        if (!campSite.getRegistrant().getId().equals(member_id)) {
+            throw new NotCampSiteRegisterException("차박지 등록자가 아닙니다");
+        } else {
+            campSiteRepository.delete(campSite);
+        }
     }
 }
