@@ -54,7 +54,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        reviewMemberService.create(reviewList.get(0),m2,1);
+        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
 
         //then
         assertThat(reviewMemberService.findByReviewAndMember(reviewList.get(0),m2).get(0).getMember_id()).isEqualTo(m2);
@@ -69,7 +69,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        reviewMemberService.create(reviewList.get(0),m2,-1);
+        reviewMemberService.createReviewMember(reviewList.get(0),m2,-1);
 
 
         //then
@@ -86,8 +86,8 @@ class ReviewMemberServiceTest {
 
         //when
 
-        Long aLong = reviewMemberService.create(reviewList.get(0), m2, 1);
-        AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.create(reviewList.get(0),m2,1));
+        Long aLong = reviewMemberService.createReviewMember(reviewList.get(0), m2, 1);
+        AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.createReviewMember(reviewList.get(0),m2,1));
 
         //then
         assertThat(e.getMessage()).isEqualTo("이미 평가한 리뷰입니다");
@@ -99,7 +99,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        CannotRecommendMyReviewException e = assertThrows(CannotRecommendMyReviewException.class, () -> reviewMemberService.create(reviewList.get(0), m1, 1));
+        CannotRecommendMyReviewException e = assertThrows(CannotRecommendMyReviewException.class, () -> reviewMemberService.createReviewMember(reviewList.get(0), m1, 1));
 
         //then
         assertThat(e.getMessage()).isEqualTo("자신의 리뷰는 추천할 수 없습니다");

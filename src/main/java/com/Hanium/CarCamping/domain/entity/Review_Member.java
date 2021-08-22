@@ -25,8 +25,8 @@ public class Review_Member {
 
     public static Review_Member createReview_Member(Review review, Member member,int i) {
         Review_Member review_member = new Review_Member();
-        review_member.setReview_id(review);
         review_member.member_id=member;
+        review_member.setReview_id(review);
         review.changeRecommend(i);
         return review_member;
     }
