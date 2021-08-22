@@ -58,6 +58,9 @@ public class ReviewService {
         if (!result.getId().equals(review.getWriter().getId())) {
             throw new NotReviewWriterException("리뷰 작성자가 아닙니다");
         }
-        reviewRepository.deleteAll();
+        reviewRepository.delete(review);
+    }
+    public List<Review> mostRecommendedTop3Review(CampSite campsite) {
+        return reviewRepository.findTop3ByCampSiteOrderByRecommendDesc(campsite);
     }
 }
