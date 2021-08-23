@@ -40,7 +40,8 @@ public class CampSiteController {
     @GetMapping("/camping/{location}/grade")
     public Result getLocationCampSiteListByGrade(@RequestParam("token") String token,@PathVariable Region location) {
         jwtService.isUsable(token);
-        List<CampSite> byRegion = campsiteService.findByRegion(location);
+        List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndScoreDESC(location);
         return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
+
 }

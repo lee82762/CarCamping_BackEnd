@@ -75,4 +75,10 @@ public class reviewController {
         reviewService.deleteReview(jwtService.findEmailByJwt(token),review_id);
         return responseService.getSuccessResult();
     }
+    @GetMapping
+    public Result getMostRecommend3Review(@RequestParam("token") String token, @PathVariable Long camping_id) {
+        jwtService.isUsable(token);
+        List<Review> result = reviewService.mostRecommendedTop3Review(camping_id);
+        return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
+    }
 }

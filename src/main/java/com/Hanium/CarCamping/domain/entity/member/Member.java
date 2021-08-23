@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity.member;
 
+import com.Hanium.CarCamping.domain.entity.Point;
 import com.Hanium.CarCamping.domain.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,6 +39,8 @@ public class Member {
 
     @OneToMany(mappedBy = "writer")
     private List<Review> reviewList = new ArrayList<>();
+    @OneToMany(mappedBy="owner")
+    private List<Point> pointList=new ArrayList<>();
 
     @Builder
     public Member(final String email,

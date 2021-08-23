@@ -6,6 +6,7 @@ import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.Review_Member;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
+import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewMemberService {
-    private final ReviewService reviewService;
+    private final PointService pointService;
     private final ReviewMemberRepository reviewMemberRepository;
 
 
@@ -34,6 +35,7 @@ public Long createReviewMember(Review review, Member member, int i) {
 
     Review_Member save = reviewMemberRepository.save(review_member);
     review.getParticipants().add(save);
+    pointService.create(member,"리뷰 평가 참여",2);
     return save.getReview_member_id();
 
 }

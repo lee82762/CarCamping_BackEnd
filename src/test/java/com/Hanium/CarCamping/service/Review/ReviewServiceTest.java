@@ -183,7 +183,7 @@ class ReviewServiceTest {
         reviewMemberService.createReviewMember(review4,member4,1);
 
 
-        List<Review> reviews = reviewService.mostRecommendedTop3Review(campsite1);
+        List<Review> reviews = reviewService.mostRecommendedTop3Review(campsite1.getCampsite_id());
         //then
         assertThat(reviews.get(0).getRecommend()).isEqualTo(3);
         assertThat(reviews.get(1).getRecommend()).isEqualTo(2);

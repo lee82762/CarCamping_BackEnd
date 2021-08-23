@@ -8,6 +8,7 @@ import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
+import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
-
+    private final PointService pointService;
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
         Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
@@ -30,6 +31,7 @@ public class CampsiteService {
             }
         }
         CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member));
+        pointService.create(member,"차박지 등록",100);
         return save.getCampsite_id();
     }
 
@@ -56,5 +58,16 @@ public class CampsiteService {
         } else {
             campSiteRepository.delete(campSite);
         }
+    }
+
+    public List<CampSite> getCampSiteByScore() {
+        return campSiteRepository.findAllByOrderByScoreDesc();
+    }
+
+    public List<CampSite> getCampSiteByRegionAndScoreDESC(Region region) {
+        return campSiteRepository.findByRegionOrderByScoreDesc(region);
+    }
+    public List<CampSite> getCampSiteByRegionAndScoreASC(Region region) {
+        return campSiteRepository.findByRegionOrderByScoreAsc(region);
     }
 }

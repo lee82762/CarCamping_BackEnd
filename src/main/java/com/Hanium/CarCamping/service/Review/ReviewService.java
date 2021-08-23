@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.service.Review;
 
+import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
 import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.Exception.NotReviewWriterException;
@@ -7,8 +8,10 @@ import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
+import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +25,13 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
+    private final CampSiteRepository campSiteRepository;
+    private final PointService pointService;
     @Transactional
     public Long saveReview(CreateReviewDto createReviewDto, Member writer, CampSite campSite) {
         Review save = reviewRepository.save(Review.createReview(createReviewDto, writer, campSite));
+        campSite.changeScore(save.getScore(),1);
+        pointService.create(writer,"리뷰 등록",10);
         return save.getReview_id();
     }
 
@@ -58,9 +65,11 @@ public class ReviewService {
         if (!result.getId().equals(review.getWriter().getId())) {
             throw new NotReviewWriterException("리뷰 작성자가 아닙니다");
         }
+        review.getCampSite().changeScore(review.getScore(),-1);
         reviewRepository.delete(review);
     }
-    public List<Review> mostRecommendedTop3Review(CampSite campsite) {
-        return reviewRepository.findTop3ByCampSiteOrderByRecommendDesc(campsite);
+    public List<Review> mostRecommendedTop3Review(Long campsite_id) {
+        CampSite campSite = campSiteRepository.findById(campsite_id).orElseThrow(NoSuchCampSiteException::new);
+        return reviewRepository.findTop3ByCampSiteOrderByRecommendDesc(campSite);
     }
 }
