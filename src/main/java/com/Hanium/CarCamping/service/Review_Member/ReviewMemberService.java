@@ -2,10 +2,14 @@ package com.Hanium.CarCamping.service.Review_Member;
 
 import com.Hanium.CarCamping.Exception.AlreadyParticipateException;
 import com.Hanium.CarCamping.Exception.CannotRecommendMyReviewException;
+import com.Hanium.CarCamping.Exception.NoSuchMemberException;
+import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.Review_Member;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
+import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +24,13 @@ import java.util.List;
 public class ReviewMemberService {
     private final PointService pointService;
     private final ReviewMemberRepository reviewMemberRepository;
+    private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
 
-
-public Long createReviewMember(Review review, Member member, int i) {
-
+public Long createReviewMember(Long review_id, Long member_id, int i) {
+    System.out.println(member_id);
+    Member member = memberRepository.findById(member_id).orElseThrow(NoSuchMemberException::new);
+    Review review = reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
     Review_Member review_member = Review_Member.createReview_Member(review, member, i);
 
     if (review.getWriter().getId().equals(member.getId())) {

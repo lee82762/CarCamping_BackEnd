@@ -6,6 +6,7 @@ import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.Exception.NotReviewWriterException;
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
+import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
@@ -52,8 +53,13 @@ public class ReviewService {
     }
 
     public Review getReview(Long id) {
-        return reviewRepository.getById(id);
+        return reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
     }
+    public ResponseReviewDto getReviewByDto(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
+        return ResponseReviewDto.convertToReviewDto(review);
+    }
+
 
     public List<Review> getAllReview() {
         return reviewRepository.findAll();

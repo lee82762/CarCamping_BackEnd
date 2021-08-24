@@ -55,8 +55,8 @@ class ReviewServiceTest {
         CreateReviewDto reviewDto1 = setUpReviewDto("싫어요", 1.0f);
 
         //when
-        reviewService.saveReview(reviewDto,member1,campsite1);
-        reviewService.saveReview(reviewDto1,member2,campsite1);
+        reviewService.saveReview(reviewDto,member1.getId(), campsite1.getCampsite_id());
+        reviewService.saveReview(reviewDto1,member1.getId(), campsite1.getCampsite_id());
 
         //then
         List<Review> result = reviewService.getCampSiteReviewByScoreASC(campsite1.getCampsite_id());
@@ -77,9 +77,9 @@ class ReviewServiceTest {
         CreateReviewDto reviewDto2 = setUpReviewDto("싫어요", 1.0f);
 
         //when
-        reviewService.saveReview(reviewDto,member1,campsite1);
-        reviewService.saveReview(reviewDto1,member2,campsite1);
-        reviewService.saveReview(reviewDto2,member2,campsite1);
+        reviewService.saveReview(reviewDto,member1.getId(), campsite1.getCampsite_id());
+        reviewService.saveReview(reviewDto1,member1.getId(), campsite1.getCampsite_id());
+        reviewService.saveReview(reviewDto2,member1.getId(), campsite1.getCampsite_id());
 
         //then
         List<Review> campSiteReviewByScoreDESC = reviewService.getCampSiteReviewByScoreDESC(campsite1.getCampsite_id());
@@ -101,9 +101,9 @@ class ReviewServiceTest {
         CreateReviewDto reviewDto2 = setUpReviewDto("괜찮아요", 2.5f);
 
         //when
-        Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
-        reviewService.saveReview(reviewDto1,member2,campsite1);
-        reviewService.saveReview(reviewDto2,member2,campsite1);
+        Long review_id = reviewService.saveReview(reviewDto, member1.getId(), campsite1.getCampsite_id());
+        reviewService.saveReview(reviewDto1,member1.getId(), campsite1.getCampsite_id());
+        reviewService.saveReview(reviewDto2,member1.getId(), campsite1.getCampsite_id());
 
         //then
         List<Review> campSiteReviewByDateASC = reviewService.getCampSiteReviewByDateASC(campsite1.getCampsite_id());
@@ -124,7 +124,7 @@ class ReviewServiceTest {
         Member member2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
         CampSite campsite1 = campsiteService.findByName("안양시 차박지");
         CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
-        Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
+        Long review_id = reviewService.saveReview(reviewDto, member1.getId(), campsite1.getCampsite_id());
         //when
         reviewService.deleteReview(member1.getEmail(),review_id);
 
@@ -138,7 +138,7 @@ class ReviewServiceTest {
         Member member2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
         CampSite campsite1 = campsiteService.findByName("안양시 차박지");
         CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
-        Long review_id = reviewService.saveReview(reviewDto, member1, campsite1);
+        Long review_id = reviewService.saveReview(reviewDto, member1.getId(), campsite1.getCampsite_id());
         //when
         NotReviewWriterException e = assertThrows(NotReviewWriterException.class, () -> reviewService.deleteReview(member2.getEmail(), review_id));
 
@@ -160,10 +160,10 @@ class ReviewServiceTest {
         CreateReviewDto reviewDto2 = setUpReviewDto("중간이야", 3.0f);
         CreateReviewDto reviewDto3 = setUpReviewDto("괜찮아요", 4.0f);
 
-        Long review_id1 = reviewService.saveReview(reviewDto, member1, campsite1);
-        Long review_id2 = reviewService.saveReview(reviewDto1, member1, campsite1);
-        Long review_id3 = reviewService.saveReview(reviewDto2, member1, campsite1);
-        Long review_id4 = reviewService.saveReview(reviewDto3, member1, campsite1);
+        Long review_id1 = reviewService.saveReview(reviewDto, member1.getId(), campsite1.getCampsite_id());
+        Long review_id2 = reviewService.saveReview(reviewDto1, member1.getId(), campsite1.getCampsite_id());
+        Long review_id3 = reviewService.saveReview(reviewDto2, member1.getId(), campsite1.getCampsite_id());
+        Long review_id4 = reviewService.saveReview(reviewDto3, member1.getId(), campsite1.getCampsite_id());
 
         Review review1 = reviewRepository.getById(review_id1);
         Review review2 = reviewRepository.getById(review_id2);

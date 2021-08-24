@@ -38,7 +38,6 @@ public class reviewController {
     public Result getReviewListByGrade(@RequestParam("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result= reviewService.getCampSiteReviewByScoreDESC(camping_id);
-        System.out.println(result.get(0).getWriter().getId());
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
@@ -66,7 +65,7 @@ public class reviewController {
     @GetMapping("/campingReview/{review_id}")
     public Result getReview(@RequestParam("token") String token, @PathVariable Long review_id) {
         jwtService.isUsable(token);
-        return responseService.getSingleResult(ResponseReviewDto.convertToReviewDto(reviewService.getReview(review_id)));
+        return responseService.getSingleResult(reviewService.getReviewByDto(review_id));
     }
 
     @DeleteMapping("campingReview/{review_id}")
@@ -75,7 +74,7 @@ public class reviewController {
         reviewService.deleteReview(jwtService.findEmailByJwt(token),review_id);
         return responseService.getSuccessResult();
     }
-    @GetMapping
+    @GetMapping("campingReview/{camping_id}/most")
     public Result getMostRecommend3Review(@RequestParam("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result = reviewService.mostRecommendedTop3Review(camping_id);
