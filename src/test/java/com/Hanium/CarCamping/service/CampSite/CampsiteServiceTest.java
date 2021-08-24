@@ -50,7 +50,7 @@ class CampsiteServiceTest {
 
     }
     @Test
-    public void 차박지_검색_기능() throws Exception {
+    public void 차박지_검색및_정렬_기능() throws Exception {
         //given
         Member member = setUpMember();
         campsiteService.saveCampSite(setUpCampSite("안양시 차박지", 5F),member);
@@ -129,7 +129,7 @@ class CampsiteServiceTest {
 
     public Member setUpMember() {
         getDto member = memberCreateService.createMember(createDto.builder().
-                email("test@naver.com")
+                email("test1@naver.com")
                 .password("1234")
                 .nickname("test")
                 .point(3)

@@ -36,7 +36,7 @@ public class CampsiteService {
     }
 
     public CampSite findById(Long id) {
-        return campSiteRepository.getById(id);
+        return campSiteRepository.findById(id).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> findByRegion(Region region) {
         System.out.println(region.name());
@@ -44,6 +44,8 @@ public class CampsiteService {
     }
 
     public CampSite findByName(String name) {
+        System.out.println("hi");
+        System.out.println(name);
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> getAllCampSiteList() {
@@ -51,11 +53,12 @@ public class CampsiteService {
                 campSiteRepository.findAll();
     }
     @Transactional
-    public void deleteCampSite(Long member_id,Long campSite_id) {
+    public void deleteCampSite(Member member,Long campSite_id) {
         CampSite campSite = campSiteRepository.findById(campSite_id).orElseThrow(NoSuchCampSiteException::new);
-        if (!campSite.getRegistrant().getId().equals(member_id)) {
+        if (!campSite.getRegistrant().getId().equals(member.getId())) {
             throw new NotCampSiteRegisterException("차박지 등록자가 아닙니다");
         } else {
+            pointService.create(member,"차박지 삭제",-100);
             campSiteRepository.delete(campSite);
         }
     }
