@@ -26,19 +26,19 @@ public class reviewController {
     private final ResponseService responseService;
 
     @PostMapping("/review/{camping_id}")
-    public Result registerReview(CreateReviewDto createReviewDto,
+    public Result registerReview(@RequestBody CreateReviewDto createReviewDto,
                                  @RequestParam("token") String token,
                                  @PathVariable Long camping_id) {
-        Member member = jwtService.findMemberByToken(token);
-        CampSite campsite = campsiteService.findById(camping_id);
-        reviewService.saveReview(createReviewDto, member, campsite);
+        Member memberByToken = jwtService.findMemberByToken(token);
+        reviewService.saveReview(createReviewDto, memberByToken.getId(), camping_id);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/campingReview/{camping_id}/gradeUp")
     public Result getReviewListByGrade(@RequestParam("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
-        List<Review> result = reviewService.getCampSiteReviewByScoreDESC(camping_id);
+        List<Review> result= reviewService.getCampSiteReviewByScoreDESC(camping_id);
+        System.out.println(result.get(0).getWriter().getId());
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 

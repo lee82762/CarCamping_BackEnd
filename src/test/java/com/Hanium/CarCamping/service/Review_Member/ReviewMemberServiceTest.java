@@ -14,6 +14,7 @@ import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
 import com.Hanium.CarCamping.service.CampSite.CampsiteService;
+import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.Review.ReviewService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import org.assertj.core.api.Assertions;
@@ -37,6 +38,7 @@ class ReviewMemberServiceTest {
     @Autowired ReviewService reviewService;
     @Autowired CampsiteService campsiteService;
     @Autowired ReviewMemberRepository reviewMemberRepository;
+    @Autowired PointService pointService;
 
     @BeforeEach
     public void setUpData() {
@@ -44,7 +46,7 @@ class ReviewMemberServiceTest {
         Member m2 = setUpMember("tester2@naver.com","차박러2");
         Long campsite_id = campsiteService.saveCampSite(setUpCampSite("안양시 차박지", 5.0f), m1);
         CreateReviewDto reviewDto = setUpReviewDto("좋아요", 5.0f);
-        reviewService.saveReview(reviewDto, m1, campsiteService.findById(campsite_id));
+        reviewService.saveReview(reviewDto, m1.getId(), campsite_id);
     }
     @Test
     public void 좋아요_기능() throws Exception {
@@ -126,12 +128,25 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
         //when
         reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
-        campsiteService.deleteCampSite(m1.getId(),campsite.getCampsite_id());
+        campsiteService.deleteCampSite(m1,campsite.getCampsite_id());
         //then
         assertThat(reviewService.getAllReview().size()).isEqualTo(0);
         assertThat(campsiteService.getAllCampSiteList().size()).isEqualTo(0);
         assertThat(reviewMemberService.getAll().size()).isEqualTo(0);
 
+    }
+    @Test
+    public void 포인트_테스트() throws Exception {
+        //given
+        Member m1= memberRepository.findByNickname("차박러1").orElseThrow(NoSuchMemberException::new);
+        Member m2 = memberRepository.findByNickname("차박러2").orElseThrow(NoSuchMemberException::new);
+        CampSite campsite = campsiteService.findByName("안양시 차박지");
+        List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
+        //when
+        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        //then
+        assertThat(m2.getPoint()).isEqualTo(2);
+        assertThat(m1.getPoint()).isEqualTo(110);
     }
 
 
@@ -163,7 +178,7 @@ class ReviewMemberServiceTest {
                 email(email)
                 .password("1234")
                 .nickname(name)
-                .point(3)
+                .point(0)
                 .build());
         return memberRepository.findByEmail(member.getEmail()).orElseThrow();
     }

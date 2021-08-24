@@ -19,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class memberController {
 
     private final MemberSignInService memberSignInService;
