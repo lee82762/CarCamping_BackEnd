@@ -3,7 +3,7 @@ package com.Hanium.CarCamping.service.Reponse;
 import com.Hanium.CarCamping.domain.dto.response.ListResult;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.dto.response.SingleResult;
-import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +38,12 @@ public class ResponseService {
         return result;
     }
 
+    public Result getSuccessResultHeader(String jwt){
+        Result result=new Result();
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.add("token",jwt);
+        return result;
+    }
     public Result getFailResult(int code, String msg) {
         Result result = new Result();
         result.setCode(code);

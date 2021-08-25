@@ -14,7 +14,6 @@ import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Review_Member.ReviewMemberService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 class ReviewServiceTest {
@@ -171,16 +169,16 @@ class ReviewServiceTest {
         Review review4 = reviewRepository.getById(review_id4);
 
         //when
-        reviewMemberService.createReviewMember(review2,member2,1);
-        reviewMemberService.createReviewMember(review2,member3,1);
-        reviewMemberService.createReviewMember(review2,member4,1);
-        reviewMemberService.createReviewMember(review1,member3,-1);
-        reviewMemberService.createReviewMember(review1,member4,-1);
-        reviewMemberService.createReviewMember(review3,member2,1);
-        reviewMemberService.createReviewMember(review3,member3,1);
-        reviewMemberService.createReviewMember(review4,member2,-1);
-        reviewMemberService.createReviewMember(review4,member3,1);
-        reviewMemberService.createReviewMember(review4,member4,1);
+        reviewMemberService.createReviewMember(review2.getReview_id(),member2.getId(),1);
+        reviewMemberService.createReviewMember(review2.getReview_id(),member3.getId(),1);
+        reviewMemberService.createReviewMember(review2.getReview_id(),member4.getId(),1);
+        reviewMemberService.createReviewMember(review1.getReview_id(),member3.getId(),-1);
+        reviewMemberService.createReviewMember(review1.getReview_id(),member4.getId(),-1);
+        reviewMemberService.createReviewMember(review3.getReview_id(),member2.getId(),1);
+        reviewMemberService.createReviewMember(review3.getReview_id(),member3.getId(),1);
+        reviewMemberService.createReviewMember(review4.getReview_id(),member2.getId(),-1);
+        reviewMemberService.createReviewMember(review4.getReview_id(),member3.getId(),1);
+        reviewMemberService.createReviewMember(review4.getReview_id(),member4.getId(),1);
 
 
         List<Review> reviews = reviewService.mostRecommendedTop3Review(campsite1.getCampsite_id());

@@ -9,7 +9,6 @@ import com.Hanium.CarCamping.domain.dto.member.getDto;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
-import com.Hanium.CarCamping.domain.entity.Review_Member;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
@@ -17,7 +16,6 @@ import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.Review.ReviewService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 class ReviewMemberServiceTest {
@@ -56,7 +53,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),1);
 
         //then
         assertThat(reviewMemberService.findByReviewAndMember(reviewList.get(0),m2).get(0).getMember_id()).isEqualTo(m2);
@@ -71,7 +68,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        reviewMemberService.createReviewMember(reviewList.get(0),m2,-1);
+        reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),-1);
 
 
         //then
@@ -88,8 +85,8 @@ class ReviewMemberServiceTest {
 
         //when
 
-        Long aLong = reviewMemberService.createReviewMember(reviewList.get(0), m2, 1);
-        AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.createReviewMember(reviewList.get(0),m2,1));
+        Long aLong = reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(), m2.getId(), 1);
+        AlreadyParticipateException e = assertThrows(AlreadyParticipateException.class, () ->reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),1));
 
         //then
         assertThat(e.getMessage()).isEqualTo("이미 평가한 리뷰입니다");
@@ -101,7 +98,7 @@ class ReviewMemberServiceTest {
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
 
         //when
-        CannotRecommendMyReviewException e = assertThrows(CannotRecommendMyReviewException.class, () -> reviewMemberService.createReviewMember(reviewList.get(0), m1, 1));
+        CannotRecommendMyReviewException e = assertThrows(CannotRecommendMyReviewException.class, () -> reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(), m1.getId(), 1));
 
         //then
         assertThat(e.getMessage()).isEqualTo("자신의 리뷰는 추천할 수 없습니다");
@@ -113,7 +110,7 @@ class ReviewMemberServiceTest {
         CampSite campsite = campsiteService.findByName("안양시 차박지");
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
         //when
-        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),1);
         reviewService.deleteReview(reviewList.get(0).getWriter().getEmail(),reviewList.get(0).getReview_id());
         //then
         assertThat(reviewMemberService.getAll().size()).isEqualTo(0);
@@ -127,7 +124,7 @@ class ReviewMemberServiceTest {
         CampSite campsite = campsiteService.findByName("안양시 차박지");
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
         //when
-        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),1);
         campsiteService.deleteCampSite(m1,campsite.getCampsite_id());
         //then
         assertThat(reviewService.getAllReview().size()).isEqualTo(0);
@@ -143,7 +140,7 @@ class ReviewMemberServiceTest {
         CampSite campsite = campsiteService.findByName("안양시 차박지");
         List<Review> reviewList = reviewService.findByCampSite(campsite.getCampsite_id());
         //when
-        reviewMemberService.createReviewMember(reviewList.get(0),m2,1);
+        reviewMemberService.createReviewMember(reviewList.get(0).getReview_id(),m2.getId(),1);
         //then
         assertThat(m2.getPoint()).isEqualTo(2);
         assertThat(m1.getPoint()).isEqualTo(110);
