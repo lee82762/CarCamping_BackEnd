@@ -27,12 +27,14 @@ public class CampSite {
     private String address;
 
 
-    @OneToMany(mappedBy = "campSite", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "campSite",orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
 
     @Column(nullable = false)
-    private Float score;
-
+    private float score;
+    private float scoreSum;
+    private float reviewNum;
 
     @ManyToOne
     @JoinColumn(name = "registrant_id")
@@ -61,5 +63,15 @@ public class CampSite {
         campSite.registrant=member;
         return campSite;
 
+    }
+
+    public void changeScore(float reviewScore,int i) {
+        this.scoreSum+=reviewScore;
+        this.reviewNum+=i;
+        if (reviewNum == 0) {
+            this.score = 0f;
+        } else {
+            this.score=this.scoreSum/this.reviewNum;
+        }
     }
 }

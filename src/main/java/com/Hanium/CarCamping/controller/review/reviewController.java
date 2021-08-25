@@ -26,19 +26,18 @@ public class reviewController {
     private final ResponseService responseService;
 
     @PostMapping("/review/{camping_id}")
-    public Result registerReview(CreateReviewDto createReviewDto,
+    public Result registerReview(@RequestBody CreateReviewDto createReviewDto,
                                  @RequestParam("token") String token,
                                  @PathVariable Long camping_id) {
-        Member member = jwtService.findMemberByToken(token);
-        CampSite campsite = campsiteService.findById(camping_id);
-        reviewService.saveReview(createReviewDto, member, campsite);
+        Member memberByToken = jwtService.findMemberByToken(token);
+        reviewService.saveReview(createReviewDto, memberByToken.getId(), camping_id);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/campingReview/{camping_id}/gradeUp")
     public Result getReviewListByGrade(@RequestParam("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
-        List<Review> result = reviewService.getCampSiteReviewByScoreDESC(camping_id);
+        List<Review> result= reviewService.getCampSiteReviewByScoreDESC(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
@@ -66,6 +65,19 @@ public class reviewController {
     @GetMapping("/campingReview/{review_id}")
     public Result getReview(@RequestParam("token") String token, @PathVariable Long review_id) {
         jwtService.isUsable(token);
-        return responseService.getSingleResult(ResponseReviewDto.convertToReviewDto(reviewService.getReview(review_id)));
+        return responseService.getSingleResult(reviewService.getReviewByDto(review_id));
+    }
+
+    @DeleteMapping("campingReview/{review_id}")
+    public Result deleteReview(@RequestParam("token") String token, @PathVariable Long review_id) {
+        jwtService.isUsable(token);
+        reviewService.deleteReview(jwtService.findEmailByJwt(token),review_id);
+        return responseService.getSuccessResult();
+    }
+    @GetMapping("campingReview/{camping_id}/most")
+    public Result getMostRecommend3Review(@RequestParam("token") String token, @PathVariable Long camping_id) {
+        jwtService.isUsable(token);
+        List<Review> result = reviewService.mostRecommendedTop3Review(camping_id);
+        return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 }

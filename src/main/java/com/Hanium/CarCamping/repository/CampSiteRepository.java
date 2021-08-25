@@ -19,5 +19,8 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
 
     Optional<CampSite> findByName(String name);
 
+    List<CampSite> findAllByOrderByScoreDesc();
+    List<CampSite> findByRegionOrderByScoreDesc(Region region);
+    List<CampSite> findByRegionOrderByScoreAsc(Region region);
 
 }

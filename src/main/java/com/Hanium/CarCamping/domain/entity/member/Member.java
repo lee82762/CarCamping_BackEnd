@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.domain.entity.member;
 
+import com.Hanium.CarCamping.domain.entity.Point;
 import com.Hanium.CarCamping.domain.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,8 +37,10 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer")
     private List<Review> reviewList = new ArrayList<>();
+    @OneToMany(mappedBy="owner")
+    private List<Point> pointList=new ArrayList<>();
 
     @Builder
     public Member(final String email,
