@@ -33,13 +33,13 @@ class CampsiteServiceTest {
         //given
         Member member = setUpMember();
         campsiteService.saveCampSite(CreateCampSiteDto.builder()
-                .name("테스트 차박지")
-                .address("안양시 동안구")
-                .explanation("설명")
-                .image("htts://www.naver.com")
-                .region("경기도")
+                .name("테스트 차박지1")
+                .address("안양시 동안구1")
+                .explanation("설명1")
+                .image("htts://www.naver.com1")
+                .region("경기도1")
                 .score(4.0f)
-                .videoLink("https://youtube.com")
+                .videoLink("https://youtube.com1")
                 .build(), memberRepository.findById(member.getId()).orElseThrow());
         //when
         int size = campsiteService.getAllCampSiteList().size();
@@ -129,7 +129,7 @@ class CampsiteServiceTest {
 
     public Member setUpMember() {
         getDto member = memberCreateService.createMember(createDto.builder().
-                email("test1@naver.com")
+                email("test13@naver.com")
                 .password("1234")
                 .nickname("test")
                 .point(3)
