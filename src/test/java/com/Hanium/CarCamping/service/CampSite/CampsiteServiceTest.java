@@ -27,7 +27,7 @@ class CampsiteServiceTest {
     @Autowired MemberRepository memberRepository;
     @Autowired CampsiteService campsiteService;
 
-
+/*
     @Test
     public void 차박지_등록() throws Exception {
         //given
@@ -136,6 +136,8 @@ class CampsiteServiceTest {
                 .build());
         return memberRepository.findByEmail(member.getEmail()).orElseThrow();
     }
+
+ */
 
 
 
