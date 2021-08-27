@@ -39,7 +39,7 @@ class ReviewMemberServiceTest {
     @Autowired CampsiteService campsiteService;
     @Autowired ReviewMemberRepository reviewMemberRepository;
     @Autowired PointService pointService;
-
+/*
     @BeforeEach
     public void setUpData() {
         Member m1 = setUpMember("tester1@naver.com","차박러1");
@@ -183,4 +183,6 @@ class ReviewMemberServiceTest {
         return memberRepository.findByEmail(member.getEmail()).orElseThrow();
     }
 
+
+ */
 }

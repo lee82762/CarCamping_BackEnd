@@ -15,7 +15,7 @@ import java.util.Set;
 @SpringBootTest
 class MemberCreateServiceTest {
 
-
+    /*
     @Autowired
     MemberCreateService memberCreateService;
     @Autowired
@@ -42,7 +42,7 @@ class MemberCreateServiceTest {
                 .role(Role.USER)
                 .build();
     }
-    /*
+
     @Test
     public void 레디스_테스트() throws Exception {
         String key = "value";
