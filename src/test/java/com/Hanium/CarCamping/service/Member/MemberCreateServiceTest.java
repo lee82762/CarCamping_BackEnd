@@ -42,6 +42,7 @@ class MemberCreateServiceTest {
                 .role(Role.USER)
                 .build();
     }
+    /*
     @Test
     public void 레디스_테스트() throws Exception {
         String key = "value";
@@ -67,5 +68,7 @@ class MemberCreateServiceTest {
         System.out.println("scoreRange = " + Arrays.toString(scoreRange.toArray()));
 
     }
+
+     */
 
 }
