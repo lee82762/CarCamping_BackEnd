@@ -1,8 +1,8 @@
 package com.Hanium.CarCamping.service.member;
 
-import com.Hanium.CarCamping.config.security.filter.WrongPasswordException;
+import com.Hanium.CarCamping.Exception.WrongPasswordException;
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
-import com.Hanium.CarCamping.config.security.jwt.MemberNotFoundException;
+import com.Hanium.CarCamping.Exception.MemberNotFoundException;
 import com.Hanium.CarCamping.domain.dto.member.signInDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
