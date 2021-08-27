@@ -1,6 +1,6 @@
 package com.Hanium.CarCamping.config.security;
 
-import com.Hanium.CarCamping.config.security.jwt.MemberNotFoundException;
+import com.Hanium.CarCamping.Exception.MemberNotFoundException;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

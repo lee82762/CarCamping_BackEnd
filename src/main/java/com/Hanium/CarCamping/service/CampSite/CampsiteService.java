@@ -10,6 +10,7 @@ import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
+    private final RedisTemplate redisTemplate;
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
         Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
@@ -32,6 +34,7 @@ public class CampsiteService {
         }
         CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member));
         pointService.create(member,"차박지 등록",100);
+        redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return save.getCampsite_id();
     }
 
@@ -59,6 +62,7 @@ public class CampsiteService {
             throw new NotCampSiteRegisterException("차박지 등록자가 아닙니다");
         } else {
             pointService.create(member,"차박지 삭제",-100);
+            redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
             campSiteRepository.delete(campSite);
         }
     }
