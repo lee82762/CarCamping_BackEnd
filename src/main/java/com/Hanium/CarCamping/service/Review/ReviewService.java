@@ -15,6 +15,7 @@ import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
+    private final RedisTemplate redisTemplate;
     @Transactional
     public Long saveReview(CreateReviewDto createReviewDto, Long member_id, Long campSite_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(NoSuchMemberException::new);
@@ -36,6 +38,7 @@ public class ReviewService {
         Review save = reviewRepository.save(Review.createReview(createReviewDto, member, campSite));
         campSite.changeScore(save.getScore(),1);
         pointService.create(member,"리뷰 등록",10);
+        redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return save.getReview_id();
     }
 
@@ -76,6 +79,7 @@ public class ReviewService {
         }
         review.getCampSite().changeScore(review.getScore(),-1);
         pointService.create(result,"리뷰 삭제",-10);
+        redisTemplate.opsForZSet().add("ranking",result.getNickname(), result.getPoint());
         reviewRepository.delete(review);
     }
     public List<Review> mostRecommendedTop3Review(Long campsite_id) {

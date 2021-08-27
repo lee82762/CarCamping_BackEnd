@@ -33,6 +33,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	//mariaDB
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 test {
