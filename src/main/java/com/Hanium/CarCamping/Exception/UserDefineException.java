@@ -1,4 +1,4 @@
-package com.Hanium.CarCamping.config.security.jwt;
+package com.Hanium.CarCamping.Exception;
 
 import lombok.Builder;
 import lombok.Getter;

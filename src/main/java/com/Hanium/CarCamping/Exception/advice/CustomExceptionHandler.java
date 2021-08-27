@@ -66,5 +66,18 @@ public class CustomExceptionHandler {
         return responseService.getFailResult(-1008, "이미 평가한 리뷰입니다.");
     }
 
+    //인증관련
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result AccessDeniedException() {
+        return responseService.getFailResult(-1009, "해당 작업에 권한이 없습니다.");
+    }
 
+    @ExceptionHandler(AuthenticationEntryPointException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result AuthenticationEntryPointException() {
+        return responseService.getFailResult(-1010, "인증정보가 유효하지 않습니다.");
+    }
+
+    //로그인 및 로그인 관련
 }
