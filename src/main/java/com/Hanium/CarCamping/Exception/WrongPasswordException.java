@@ -1,4 +1,4 @@
-package com.Hanium.CarCamping.config.security.filter;
+package com.Hanium.CarCamping.Exception;
 
 import com.Hanium.CarCamping.config.security.jwt.BusinessLogicException;
 import com.Hanium.CarCamping.config.security.jwt.ErrorCodeType;

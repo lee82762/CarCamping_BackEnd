@@ -24,10 +24,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AccessDeniedHandlerCustom accessDeniedHandlerCustom;
-    private final AuthenticationEntryPointCustom authenticationEntryPointCustom;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CorsConfig corsConfig;
 
     private static final String[] AUTH_ARR = {
             "/v2/api-docs",
@@ -53,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilter(corsConfig.corsFilter())
                 .headers().frameOptions().disable()
                 .and()
                 .httpBasic().disable()

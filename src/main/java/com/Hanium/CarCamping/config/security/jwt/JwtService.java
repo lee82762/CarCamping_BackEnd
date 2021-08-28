@@ -1,5 +1,7 @@
 package com.Hanium.CarCamping.config.security.jwt;
 
+import com.Hanium.CarCamping.Exception.MemberNotFoundException;
+import com.Hanium.CarCamping.Exception.UserDefineException;
 import com.Hanium.CarCamping.config.security.UserDetailsServiceImpl;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;

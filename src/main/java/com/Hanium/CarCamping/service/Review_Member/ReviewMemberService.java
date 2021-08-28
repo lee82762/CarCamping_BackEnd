@@ -12,6 +12,7 @@ import com.Hanium.CarCamping.repository.ReviewMemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,9 @@ public class ReviewMemberService {
     private final ReviewMemberRepository reviewMemberRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
+    private final RedisTemplate redisTemplate;
 
 public Long createReviewMember(Long review_id, Long member_id, int i) {
-    System.out.println(member_id);
     Member member = memberRepository.findById(member_id).orElseThrow(NoSuchMemberException::new);
     Review review = reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
     Review_Member review_member = Review_Member.createReview_Member(review, member, i);
@@ -42,6 +43,7 @@ public Long createReviewMember(Long review_id, Long member_id, int i) {
     Review_Member save = reviewMemberRepository.save(review_member);
     review.getParticipants().add(save);
     pointService.create(member,"리뷰 평가 참여",2);
+    redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
     return save.getReview_member_id();
 
 }

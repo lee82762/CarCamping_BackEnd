@@ -33,12 +33,9 @@ public class memberController {
     private final JwtService jwtService;
 
     @PostMapping("/signIn")
-    public ResponseEntity signIn(@RequestBody signInDto signInDto ) {
-        System.out.println(signInDto);
-        HttpHeaders httpHeaders=new HttpHeaders();
+    public Result signIn(@RequestBody signInDto signInDto ) {
         String jwt=memberSignInService.signIn(signInDto);
-        httpHeaders.add("token",jwt);
-        return new ResponseEntity(httpHeaders, HttpStatus.OK);
+        return responseService.getSingleResult(jwt);
     }
 
     @PostMapping(value = "/signUp")

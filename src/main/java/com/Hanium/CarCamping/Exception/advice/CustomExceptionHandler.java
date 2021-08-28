@@ -66,5 +66,44 @@ public class CustomExceptionHandler {
         return responseService.getFailResult(-1008, "이미 평가한 리뷰입니다.");
     }
 
+    //인증관련
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result AccessDeniedException() {
+        return responseService.getFailResult(-1009, "해당 작업에 권한이 없습니다.");
+    }
 
+    @ExceptionHandler(AuthenticationEntryPointException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result AuthenticationEntryPointException() {
+        return responseService.getFailResult(-1010, "인증정보가 유효하지 않습니다.");
+    }
+
+
+    //로그인 및 로그인 관련
+    @ExceptionHandler(DuplicatedEmailException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result DuplicatedEmailException() {
+        return responseService.getFailResult(-1011, "이미 존재하는 이메일입니다.");
+    }
+    @ExceptionHandler(DuplicatedNickNameException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result DuplicatedNickNameException() {
+        return responseService.getFailResult(-1012, "이미 존재하는 닉네임입니다.");
+    }
+    @ExceptionHandler(MemberNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result MemberNotFoundException() {
+        return responseService.getFailResult(-1013, "찾을 수 없는 회원입니다.");
+    }
+    @ExceptionHandler(WrongPasswordException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result WrongPasswordException() {
+        return responseService.getFailResult(-1014, "패스워드가 틀렸습니다.");
+    }
+    @ExceptionHandler(UserDefineException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result UserDefineException() {
+        return responseService.getFailResult(-1015, "키를 변환하는데 실패했습니다.");
+    }
 }
