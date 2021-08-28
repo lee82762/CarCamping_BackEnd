@@ -5,6 +5,7 @@ import com.Hanium.CarCamping.Exception.DuplicatedNickNameException;
 import com.Hanium.CarCamping.domain.dto.member.createDto;
 import com.Hanium.CarCamping.domain.dto.member.getDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +25,9 @@ public class MemberCreateService {
             throw new DuplicatedNickNameException();
         }
         memberCreateDto.setPassword(passwordEncoder.encode(memberCreateDto.getPassword()));
-
-        Member savedMember = memberRepository.save(memberCreateDto.of());
+        Member result = memberCreateDto.of();
+        result.setRole(Role.USER);
+        Member savedMember = memberRepository.save(result);
 
         return getDto.toDto(savedMember);
     }
