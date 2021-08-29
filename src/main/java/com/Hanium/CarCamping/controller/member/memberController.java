@@ -67,13 +67,13 @@ public class memberController {
         return responseService.getSuccessResult();
     }
 
-    @GetMapping(value = "checkLoginId")
-    public Result checkLoginId(@RequestParam("id")String id) {
+    @PostMapping(value = "checkLoginId")
+    public Result checkLoginId(@RequestBody String id) {
         return responseService.getSingleResult(memberRepository.existsByEmail(id));
     }
 
-    @GetMapping(value = "checkNickName")
-    public Result checkNickName(@RequestParam("nickname")String nickname) {
+    @PostMapping(value = "checkNickName")
+    public Result checkNickName(@RequestBody String nickname) {
         return responseService.getSingleResult(memberRepository.existsByNickname(nickname));
     }
 }
