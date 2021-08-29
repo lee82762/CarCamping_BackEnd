@@ -7,6 +7,7 @@ import com.Hanium.CarCamping.domain.dto.member.getDto;
 import com.Hanium.CarCamping.domain.dto.member.signInDto;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import com.Hanium.CarCamping.service.member.MemberDeleteService;
@@ -31,38 +32,48 @@ public class memberController {
     private final MemberDeleteService memberDeleteService;
     private final ResponseService responseService;
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/signIn")
-    public Result signIn(@RequestBody signInDto signInDto ) {
-        String jwt=memberSignInService.signIn(signInDto);
+    public Result signIn(@RequestBody signInDto signInDto) {
+        String jwt = memberSignInService.signIn(signInDto);
         return responseService.getSingleResult(jwt);
     }
 
     @PostMapping(value = "/signUp")
     public Result createMember(@RequestBody createDto memberCreateDto) {
         getDto savedMember = memberCreateService.createMember(memberCreateDto);
-        System.out.println(URI.create("/signUp/"+savedMember.getId()));
+        System.out.println(URI.create("/signUp/" + savedMember.getId()));
         return responseService.getSuccessResult();
     }
 
     @PostMapping(value = "/memberUpdate")
-    public Result main(@RequestParam("token") String token, @RequestBody UpdateDto updateDto){
-        Member member=jwtService.findMemberByToken(token);
-        memberUpdateService.memberUpdate(updateDto,member);
+    public Result main(@RequestParam("token") String token, @RequestBody UpdateDto updateDto) {
+        Member member = jwtService.findMemberByToken(token);
+        memberUpdateService.memberUpdate(updateDto, member);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping(value = "/memberDelete")
-    public Result deleteMember(@RequestParam("token")String token){
+    public Result deleteMember(@RequestParam("token") String token) {
         jwtService.isUsable(token);
-        Member member=jwtService.findMemberByToken(token);
+        Member member = jwtService.findMemberByToken(token);
         memberDeleteService.deleteMember(member);
         return responseService.getSuccessResult();
     }
 
     @GetMapping(value = "/logout")
-    public Result logout(@RequestParam("token")String token){
+    public Result logout(@RequestParam("token") String token) {
         return responseService.getSuccessResult();
     }
 
+    @GetMapping(value = "checkLoginId")
+    public Result checkLoginId(@RequestParam("id")String id) {
+        return responseService.getSingleResult(memberRepository.existsByEmail(id));
+    }
+
+    @GetMapping(value = "checkNickName")
+    public Result checkNickName(@RequestParam("nickname")String nickname) {
+        return responseService.getSingleResult(memberRepository.existsByNickname(nickname));
+    }
 }
