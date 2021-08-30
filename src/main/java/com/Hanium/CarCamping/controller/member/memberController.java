@@ -1,12 +1,10 @@
 package com.Hanium.CarCamping.controller.member;
 
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
-import com.Hanium.CarCamping.domain.dto.member.UpdateDto;
-import com.Hanium.CarCamping.domain.dto.member.createDto;
-import com.Hanium.CarCamping.domain.dto.member.getDto;
-import com.Hanium.CarCamping.domain.dto.member.signInDto;
+import com.Hanium.CarCamping.domain.dto.member.*;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import com.Hanium.CarCamping.service.member.MemberDeleteService;
@@ -31,38 +29,60 @@ public class memberController {
     private final MemberDeleteService memberDeleteService;
     private final ResponseService responseService;
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/signIn")
-    public Result signIn(@RequestBody signInDto signInDto ) {
-        String jwt=memberSignInService.signIn(signInDto);
+    public Result signIn(@RequestBody signInDto signInDto) {
+        String jwt = memberSignInService.signIn(signInDto);
         return responseService.getSingleResult(jwt);
     }
 
     @PostMapping(value = "/signUp")
     public Result createMember(@RequestBody createDto memberCreateDto) {
         getDto savedMember = memberCreateService.createMember(memberCreateDto);
-        System.out.println(URI.create("/signUp/"+savedMember.getId()));
+        System.out.println(URI.create("/signUp/" + savedMember.getId()));
         return responseService.getSuccessResult();
     }
 
-    @PostMapping(value = "/memberUpdate")
-    public Result main(@RequestParam("token") String token, @RequestBody UpdateDto updateDto){
-        Member member=jwtService.findMemberByToken(token);
-        memberUpdateService.memberUpdate(updateDto,member);
+    @PostMapping(value = "/member/update/nickname")
+    public Result main(@RequestHeader("token") String token, @RequestBody UpdateNickNameDto updateNickNameDto) {
+        String email = jwtService.findEmailByJwt(token);
+        memberUpdateService.memberNicknameUpdate(updateNickNameDto, email);
         return responseService.getSuccessResult();
     }
+    @PostMapping(value = "/member/update/password")
+    public Result main(@RequestHeader("token") String token, @RequestBody UpdatePasswordDto updatePasswordDto) {
+        String email = jwtService.findEmailByJwt(token);
+        memberUpdateService.memberPasswordUpdate(updatePasswordDto, email);
+        return responseService.getSuccessResult();
+    }
+
 
     @DeleteMapping(value = "/memberDelete")
-    public Result deleteMember(@RequestParam("token")String token){
+    public Result deleteMember(@RequestHeader("token") String token) {
         jwtService.isUsable(token);
-        Member member=jwtService.findMemberByToken(token);
+        Member member = jwtService.findMemberByToken(token);
         memberDeleteService.deleteMember(member);
         return responseService.getSuccessResult();
     }
 
     @GetMapping(value = "/logout")
-    public Result logout(@RequestParam("token")String token){
+    public Result logout(@RequestHeader("token") String token) {
         return responseService.getSuccessResult();
     }
 
+    @PostMapping(value = "/checkLoginId")
+    public Result checkLoginId(@RequestBody checkDto check) {
+        return responseService.getSingleResult(memberRepository.existsByEmail(check.getCheck()));
+    }
+
+    @PostMapping(value = "/checkNickName")
+    public Result checkNickName(@RequestBody checkDto check) {
+        return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
+    }
+    @GetMapping(value="/myInfo")
+    public Result getMyInfo(@RequestHeader("token")String token) {
+        return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
+
+    }
 }

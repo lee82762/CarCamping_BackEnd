@@ -2,15 +2,16 @@ package com.Hanium.CarCamping.domain.dto.member;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class UpdateDto {
-    private String password;
+@NoArgsConstructor
+public class UpdateNickNameDto {
     private String nickname;
 
     @Builder
-    public UpdateDto(String password, String nickname) {
-        this.password = password;
+    public UpdateNickNameDto(String nickname) {
         this.nickname=nickname;
     }
+
 }
