@@ -1,10 +1,7 @@
 package com.Hanium.CarCamping.controller.member;
 
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
-import com.Hanium.CarCamping.domain.dto.member.UpdateDto;
-import com.Hanium.CarCamping.domain.dto.member.createDto;
-import com.Hanium.CarCamping.domain.dto.member.getDto;
-import com.Hanium.CarCamping.domain.dto.member.signInDto;
+import com.Hanium.CarCamping.domain.dto.member.*;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
@@ -68,12 +65,12 @@ public class memberController {
     }
 
     @PostMapping(value = "checkLoginId")
-    public Result checkLoginId(@RequestBody String id) {
-        return responseService.getSingleResult(memberRepository.existsByEmail(id));
+    public Result checkLoginId(@RequestBody checkDto check) {
+        return responseService.getSingleResult(memberRepository.existsByEmail(check.getCheck()));
     }
 
     @PostMapping(value = "checkNickName")
-    public Result checkNickName(@RequestBody String nickname) {
-        return responseService.getSingleResult(memberRepository.existsByNickname(nickname));
+    public Result checkNickName(@RequestBody checkDto check) {
+        return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
     }
 }
