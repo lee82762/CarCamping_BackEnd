@@ -45,14 +45,14 @@ public class memberController {
     }
 
     @PostMapping(value = "/memberUpdate")
-    public Result main(@RequestParam("token") String token, @RequestBody UpdateDto updateDto) {
+    public Result main(@RequestHeader("token") String token, @RequestBody UpdateDto updateDto) {
         Member member = jwtService.findMemberByToken(token);
         memberUpdateService.memberUpdate(updateDto, member);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping(value = "/memberDelete")
-    public Result deleteMember(@RequestParam("token") String token) {
+    public Result deleteMember(@RequestHeader("token") String token) {
         jwtService.isUsable(token);
         Member member = jwtService.findMemberByToken(token);
         memberDeleteService.deleteMember(member);
@@ -60,17 +60,22 @@ public class memberController {
     }
 
     @GetMapping(value = "/logout")
-    public Result logout(@RequestParam("token") String token) {
+    public Result logout(@RequestHeader("token") String token) {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping(value = "checkLoginId")
+    @PostMapping(value = "/checkLoginId")
     public Result checkLoginId(@RequestBody checkDto check) {
         return responseService.getSingleResult(memberRepository.existsByEmail(check.getCheck()));
     }
 
-    @PostMapping(value = "checkNickName")
+    @PostMapping(value = "/checkNickName")
     public Result checkNickName(@RequestBody checkDto check) {
         return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
+    }
+    @GetMapping(value="/myInfo")
+    public Result getMyInfo(@RequestHeader("token")String token) {
+        return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
+
     }
 }
