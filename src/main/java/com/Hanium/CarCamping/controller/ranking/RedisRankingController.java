@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +33,7 @@ public class RedisRankingController {
         return responseService.getListResult(collect);
     }
     @GetMapping("/myRank")
-    public Result getMyRank(@RequestParam("token") String token) {
+    public Result getMyRank(@RequestHeader("token") String token) {
         Long ranking = redisTemplate.opsForZSet().reverseRank("ranking", jwtService.findMemberByToken(token).getNickname());
         return responseService.getSingleResult(ranking+1);
     }

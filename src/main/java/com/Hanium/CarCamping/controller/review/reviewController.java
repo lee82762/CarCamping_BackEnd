@@ -27,7 +27,7 @@ public class reviewController {
 
     @PostMapping("/review/{camping_id}")
     public Result registerReview(@RequestBody CreateReviewDto createReviewDto,
-                                 @RequestParam("token") String token,
+                                 @RequestHeader("token") String token,
                                  @PathVariable Long camping_id) {
         Member memberByToken = jwtService.findMemberByToken(token);
         reviewService.saveReview(createReviewDto, memberByToken.getId(), camping_id);
@@ -35,47 +35,47 @@ public class reviewController {
     }
 
     @GetMapping("/campingReview/{camping_id}/gradeUp")
-    public Result getReviewListByGrade(@RequestParam("token") String token, @PathVariable Long camping_id) {
+    public Result getReviewListByGrade(@RequestHeader("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result= reviewService.getCampSiteReviewByScoreDESC(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/campingReview/{camping_id}/gradeDown")
-    public Result getReviewListByGradeDown(@RequestParam("token") String token, @PathVariable Long camping_id) {
+    public Result getReviewListByGradeDown(@RequestHeader("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result = reviewService.getCampSiteReviewByScoreASC(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/campingReview/{camping_id}/latestUP")
-    public Result getReviewListByDateUP(@RequestParam("token") String token, @PathVariable Long camping_id) {
+    public Result getReviewListByDateUP(@RequestHeader("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result = reviewService.getCampSiteReviewByDateDESC(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/campingReview/{camping_id}/latestDOWN")
-    public Result getReviewListByDateDOWN(@RequestParam("token") String token, @PathVariable Long camping_id) {
+    public Result getReviewListByDateDOWN(@RequestHeader("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result = reviewService.getCampSiteReviewByDateASC(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/campingReview/{review_id}")
-    public Result getReview(@RequestParam("token") String token, @PathVariable Long review_id) {
+    public Result getReview(@RequestHeader("token") String token, @PathVariable Long review_id) {
         jwtService.isUsable(token);
         return responseService.getSingleResult(reviewService.getReviewByDto(review_id));
     }
 
     @DeleteMapping("campingReview/{review_id}")
-    public Result deleteReview(@RequestParam("token") String token, @PathVariable Long review_id) {
+    public Result deleteReview(@RequestHeader("token") String token, @PathVariable Long review_id) {
         jwtService.isUsable(token);
         reviewService.deleteReview(jwtService.findEmailByJwt(token),review_id);
         return responseService.getSuccessResult();
     }
     @GetMapping("campingReview/{camping_id}/most")
-    public Result getMostRecommend3Review(@RequestParam("token") String token, @PathVariable Long camping_id) {
+    public Result getMostRecommend3Review(@RequestHeader("token") String token, @PathVariable Long camping_id) {
         jwtService.isUsable(token);
         List<Review> result = reviewService.mostRecommendedTop3Review(camping_id);
         return responseService.getListResult(result.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
