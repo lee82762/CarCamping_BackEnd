@@ -44,12 +44,19 @@ public class memberController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping(value = "/memberUpdate")
-    public Result main(@RequestHeader("token") String token, @RequestBody UpdateDto updateDto) {
-        Member member = jwtService.findMemberByToken(token);
-        memberUpdateService.memberUpdate(updateDto, member);
+    @PostMapping(value = "/member/update/nickname")
+    public Result main(@RequestHeader("token") String token, @RequestBody UpdateNickNameDto updateNickNameDto) {
+        String email = jwtService.findEmailByJwt(token);
+        memberUpdateService.memberNicknameUpdate(updateNickNameDto, email);
         return responseService.getSuccessResult();
     }
+    @PostMapping(value = "/member/update/password")
+    public Result main(@RequestHeader("token") String token, @RequestBody UpdatePasswordDto updatePasswordDto) {
+        String email = jwtService.findEmailByJwt(token);
+        memberUpdateService.memberPasswordUpdate(updatePasswordDto, email);
+        return responseService.getSuccessResult();
+    }
+
 
     @DeleteMapping(value = "/memberDelete")
     public Result deleteMember(@RequestHeader("token") String token) {
