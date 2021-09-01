@@ -34,7 +34,12 @@ public class RedisRankingController {
     }
     @GetMapping("/myRank")
     public Result getMyRank(@RequestHeader("token") String token) {
-        Long ranking = redisTemplate.opsForZSet().reverseRank("ranking", jwtService.findMemberByToken(token).getNickname());
+        Long ranking=0L;
+        Double ranking1 = redisTemplate.opsForZSet().score("ranking", jwtService.findMemberByToken(token).getNickname());
+        Set<String> ranking2 = redisTemplate.opsForZSet().reverseRangeByScore("ranking", ranking1, ranking1, 0, 1);
+        for (String s : ranking2) {
+            ranking = redisTemplate.opsForZSet().reverseRank("ranking", s);
+        }
         return responseService.getSingleResult(ranking+1);
     }
 
