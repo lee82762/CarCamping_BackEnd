@@ -49,18 +49,21 @@ public class CampSite {
 
     private String videoLink;
 
+    private String facilities;
+
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
 
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
         campSite.address= createCampSiteDto.getAddress();
-        campSite.score= createCampSiteDto.getScore();
+        campSite.score= 0f;
         campSite.region=Region.valueOf(createCampSiteDto.getRegion());
         campSite.explanation= createCampSiteDto.getExplanation();
         campSite.image= createCampSiteDto.getImage();
         campSite.videoLink= createCampSiteDto.getVideoLink();
         campSite.registrant=member;
+        campSite.facilities= createCampSiteDto.getFacilities();
         return campSite;
 
     }

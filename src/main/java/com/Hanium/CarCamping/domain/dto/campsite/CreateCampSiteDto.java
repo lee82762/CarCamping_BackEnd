@@ -19,7 +19,7 @@ public class CreateCampSiteDto {
     private String image;
     @NotBlank
     private String explanation;
-    private Float score;
+    private String facilities;
     private String videoLink;
     private String region;
 }
