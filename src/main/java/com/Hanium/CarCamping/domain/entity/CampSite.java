@@ -61,7 +61,7 @@ public class CampSite {
 
 
 
-    public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
+    public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member,String[] geodata) {
 
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
@@ -71,8 +71,8 @@ public class CampSite {
         campSite.explanation= createCampSiteDto.getExplanation();
         campSite.image= createCampSiteDto.getImage();
         campSite.videoLink= createCampSiteDto.getVideoLink();
-        campSite.lat=createCampSiteDto.getLat();
-        campSite.lng=createCampSiteDto.getLng();
+        campSite.lat=geodata[0];
+        campSite.lng=geodata[1];
         campSite.registrant=member;
         campSite.facilities= createCampSiteDto.getFacilities();
         return campSite;
