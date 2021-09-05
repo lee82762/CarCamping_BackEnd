@@ -49,7 +49,16 @@ public class CampSite {
 
     private String videoLink;
 
+
+    //컬럼 추가
+    @Column(nullable = false)
+    private String lat;
+
+    @Column(nullable = false)
+    private  String lng;
+
     private String facilities;
+
 
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
@@ -62,6 +71,8 @@ public class CampSite {
         campSite.explanation= createCampSiteDto.getExplanation();
         campSite.image= createCampSiteDto.getImage();
         campSite.videoLink= createCampSiteDto.getVideoLink();
+        campSite.lat=createCampSiteDto.getLat();
+        campSite.lng=createCampSiteDto.getLng();
         campSite.registrant=member;
         campSite.facilities= createCampSiteDto.getFacilities();
         return campSite;

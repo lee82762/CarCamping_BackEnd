@@ -11,7 +11,6 @@ import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
-import com.Hanium.CarCamping.service.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

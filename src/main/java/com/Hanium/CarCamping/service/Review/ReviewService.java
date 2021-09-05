@@ -4,7 +4,6 @@ import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
 import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.Exception.NotReviewWriterException;
-import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
