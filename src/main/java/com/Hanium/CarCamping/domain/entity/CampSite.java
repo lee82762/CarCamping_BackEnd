@@ -49,6 +49,7 @@ public class CampSite {
 
     private String videoLink;
 
+
     //컬럼 추가
     @Column(nullable = false)
     private String lat;
@@ -56,13 +57,16 @@ public class CampSite {
     @Column(nullable = false)
     private  String lng;
 
+    private String facilities;
+
+
 
     public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member) {
 
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
         campSite.address= createCampSiteDto.getAddress();
-        campSite.score= createCampSiteDto.getScore();
+        campSite.score= 0f;
         campSite.region=Region.valueOf(createCampSiteDto.getRegion());
         campSite.explanation= createCampSiteDto.getExplanation();
         campSite.image= createCampSiteDto.getImage();
@@ -70,6 +74,7 @@ public class CampSite {
         campSite.lat=createCampSiteDto.getLat();
         campSite.lng=createCampSiteDto.getLng();
         campSite.registrant=member;
+        campSite.facilities= createCampSiteDto.getFacilities();
         return campSite;
 
     }

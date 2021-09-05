@@ -56,10 +56,9 @@ public class memberController {
 
 
     @DeleteMapping(value = "/memberDelete")
-    public Result deleteMember(@RequestHeader("token") String token) {
+    public Result deleteMember(@RequestHeader("token") String token,@RequestBody checkDto checkDto) {
         jwtService.isUsable(token);
-        Member member = jwtService.findMemberByToken(token);
-        memberDeleteService.deleteMember(member);
+        memberDeleteService.deleteMember(token,checkDto);
         return responseService.getSuccessResult();
     }
 
@@ -85,4 +84,5 @@ public class memberController {
         return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
 
     }
+
 }
