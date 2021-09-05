@@ -5,6 +5,7 @@ import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
 import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
+import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
@@ -121,7 +122,6 @@ public class CampsiteService {
         }
         return null;
     }
-
 
 /*    public  Float[] findGeoPoint(String location) {
 
