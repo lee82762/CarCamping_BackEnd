@@ -11,9 +11,6 @@ import com.Hanium.CarCamping.service.member.MemberDeleteService;
 import com.Hanium.CarCamping.service.member.MemberSignInService;
 import com.Hanium.CarCamping.service.member.MemberUpdateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -81,7 +78,10 @@ public class memberController {
         return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
     }
     @GetMapping(value="/myInfo")
-    public Result getMyInfo(@RequestHeader("token")String token) {
+    public Result getMyInfo(@RequestParam("token")String token) {
+        Member member=jwtService.findMemberByToken(token);
+        System.out.println(member.getEmail());
+        System.out.println(member.getNickname());
         return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
 
     }

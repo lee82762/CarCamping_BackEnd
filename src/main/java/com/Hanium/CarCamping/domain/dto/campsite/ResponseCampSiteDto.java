@@ -19,6 +19,8 @@ public class ResponseCampSiteDto {
     private Float score;
     private String explanation;
     private String videoLink;
+    private String lat;
+    private String lng;
 
 
     public static ResponseCampSiteDto convertCampSiteDto(CampSite campSite) {
@@ -29,6 +31,9 @@ public class ResponseCampSiteDto {
                 .image(campSite.getImage())
                 .score(campSite.getScore())
                 .explanation(campSite.getExplanation())
-                .videoLink(campSite.getVideoLink()).build();
+                .videoLink(campSite.getVideoLink())
+                .lat(campSite.getLat())
+                .lng(campSite.getLng())
+                .build();
     }
 }

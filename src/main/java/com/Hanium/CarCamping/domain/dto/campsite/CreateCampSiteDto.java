@@ -22,4 +22,7 @@ public class CreateCampSiteDto {
     private Float score;
     private String videoLink;
     private String region;
+    //위도,경도 추가
+    private String lat;
+    private String lng;
 }

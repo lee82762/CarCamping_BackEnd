@@ -27,7 +27,10 @@ public class CampSiteController {
     @PostMapping("/camping/register")
     public Result registerCampSite(@RequestHeader("token") String token, @RequestBody CreateCampSiteDto createCampSiteDto) {
         Member memberByToken = jwtService.findMemberByToken(token);
-        campsiteService.saveCampSite(createCampSiteDto, memberByToken);
+        //위도 경도 추가
+        String geodata[]=campsiteService.getGeoDataByAddress(createCampSiteDto.getAddress());
+        //Dto에 담아주기
+        campsiteService.saveCampSite(createCampSiteDto, memberByToken,geodata);
         return responseService.getSuccessResult();
     }
 
@@ -65,4 +68,13 @@ public class CampSiteController {
         List<CampSite> allCampSiteList = campsiteService.getAllCampSiteList();
         return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
+
+ /*   @GetMapping("camping/location")
+    public  Result campLocation(){
+        String location = "서울특별시 서경로 15길 37";
+        Double result[]=campsiteService.getGeoDataByAddress(location);
+        System.out.println("위도="+result[0]);
+        System.out.println("경도="+result[1]);
+        return responseService.getSuccessResult();
+    }*/
 }
