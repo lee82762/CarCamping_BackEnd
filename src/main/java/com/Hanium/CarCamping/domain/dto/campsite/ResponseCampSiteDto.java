@@ -19,6 +19,7 @@ public class ResponseCampSiteDto {
     private Float score;
     private String explanation;
     private String videoLink;
+    //campsite 가져오는 부분 위도,경도 추가
     private String lat;
     private String lng;
 
