@@ -27,10 +27,7 @@ public class CampSiteController {
     @PostMapping("/camping/register")
     public Result registerCampSite(@RequestHeader("token") String token, @RequestBody CreateCampSiteDto createCampSiteDto) {
         Member memberByToken = jwtService.findMemberByToken(token);
-        //위도 경도 추가
-        String geodata[]=campsiteService.getGeoDataByAddress(createCampSiteDto.getAddress());
-        //Dto에 담아주기
-        campsiteService.saveCampSite(createCampSiteDto, memberByToken,geodata);
+        campsiteService.saveCampSite(createCampSiteDto, memberByToken);
         return responseService.getSuccessResult();
     }
 

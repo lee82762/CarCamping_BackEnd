@@ -32,17 +32,14 @@ public class CampsiteService {
     private final PointService pointService;
     private final RedisTemplate redisTemplate;
     @Transactional
-    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member,String []geodata) {
+    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
         Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
         if (byName.isPresent()) {
             if (byName.get().getRegion().toString().equals(createCampSiteDto.getRegion())) {
                 throw new DuplicateCampSiteException("이미 등록되어있는 차박지입니다");
             }
         }
-        //위도,경도 넣어주는곳
-        createCampSiteDto.setLat(geodata[0]);
-        createCampSiteDto.setLng(geodata[1]);
-        CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member));
+        CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member,getGeoDataByAddress(createCampSiteDto.getAddress())));
         pointService.create(member,"차박지 등록",100);
         redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return save.getCampsite_id();
