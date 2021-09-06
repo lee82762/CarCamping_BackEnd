@@ -13,7 +13,9 @@ import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ public class CampSiteController {
     private final JwtService jwtService;
 
     @PostMapping("/camping/register")
-    public Result registerCampSite(@RequestHeader("token") String token, @RequestBody CreateCampSiteDto createCampSiteDto) {
+    public Result registerCampSite(@RequestHeader("token") String token, @RequestBody CreateCampSiteDto createCampSiteDto)  {
         Member memberByToken = jwtService.findMemberByToken(token);
         campsiteService.saveCampSite(createCampSiteDto, memberByToken);
         return responseService.getSuccessResult();

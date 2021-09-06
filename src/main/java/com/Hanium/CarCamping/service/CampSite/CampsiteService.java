@@ -10,14 +10,17 @@ import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
+import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -32,8 +35,9 @@ public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
     private final RedisTemplate redisTemplate;
+    private final S3Uploader s3Uploader;
     @Transactional
-    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member) {
+    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member)   {
         Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
         if (byName.isPresent()) {
             if (byName.get().getRegion().toString().equals(createCampSiteDto.getRegion())) {
@@ -55,8 +59,6 @@ public class CampsiteService {
     }
 
     public CampSite findByName(String name) {
-        System.out.println("hi");
-        System.out.println(name);
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> getAllCampSiteList() {

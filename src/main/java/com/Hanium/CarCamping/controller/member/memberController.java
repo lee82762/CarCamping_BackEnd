@@ -12,7 +12,9 @@ import com.Hanium.CarCamping.service.member.MemberSignInService;
 import com.Hanium.CarCamping.service.member.MemberUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -77,12 +79,15 @@ public class memberController {
         return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
     }
     @GetMapping(value="/myInfo")
-    public Result getMyInfo(@RequestParam("token")String token) {
+    public Result getMyInfo(@RequestHeader("token")String token) {
         Member member=jwtService.findMemberByToken(token);
-        System.out.println(member.getEmail());
-        System.out.println(member.getNickname());
         return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
 
+    }
+    @PostMapping(value="/updateProfile")
+    public Result changeProfileImage(@RequestParam("images") MultipartFile multipartFile,@RequestHeader("token")String token) throws IOException {
+        memberUpdateService.setProfilePhoto(multipartFile,jwtService.findEmailByJwt(token));
+        return responseService.getSuccessResult();
     }
 
 }

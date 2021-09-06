@@ -41,7 +41,7 @@ public class Member {
     private List<Review> reviewList = new ArrayList<>();
     @OneToMany(mappedBy="owner")
     private List<Point> pointList=new ArrayList<>();
-
+    private String profile;
     @Builder
     public Member(final String email,
                   final String password,

@@ -106,4 +106,5 @@ public class CustomExceptionHandler {
     public Result UserDefineException() {
         return responseService.getFailResult(-1015, "키를 변환하는데 실패했습니다.");
     }
+
 }

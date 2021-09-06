@@ -3,11 +3,15 @@ package com.Hanium.CarCamping.domain.entity;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -45,7 +49,7 @@ public class CampSite {
 
     private String explanation;
 
-    private String image;
+    private String images;
 
     private String videoLink;
 
@@ -61,16 +65,15 @@ public class CampSite {
 
 
 
-    public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto,Member member,String[] geodata) {
-
+    public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto, Member member, String[] geodata) {
         CampSite campSite = new CampSite();
         campSite.name= createCampSiteDto.getName();
         campSite.address= createCampSiteDto.getAddress();
         campSite.score= 0f;
         campSite.region=Region.valueOf(createCampSiteDto.getRegion());
         campSite.explanation= createCampSiteDto.getExplanation();
-        campSite.image= createCampSiteDto.getImage();
         campSite.videoLink= createCampSiteDto.getVideoLink();
+        campSite.images=createCampSiteDto.getImages();
         campSite.lat=geodata[0];
         campSite.lng=geodata[1];
         campSite.registrant=member;

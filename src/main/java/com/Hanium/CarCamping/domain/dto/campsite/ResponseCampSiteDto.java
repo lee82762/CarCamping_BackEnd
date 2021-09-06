@@ -29,7 +29,7 @@ public class ResponseCampSiteDto {
                 .campsite_id(campSite.getCampsite_id())
                 .name(campSite.getName())
                 .address(campSite.getAddress())
-                .image(campSite.getImage())
+                .image(campSite.getImages())
                 .score(campSite.getScore())
                 .explanation(campSite.getExplanation())
                 .videoLink(campSite.getVideoLink())
