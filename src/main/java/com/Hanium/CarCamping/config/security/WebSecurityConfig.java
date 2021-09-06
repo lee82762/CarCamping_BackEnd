@@ -66,11 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/damoim/chat/**").hasRole("USER")
                 .anyRequest().permitAll()
 
-  /*              .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandlerCustom)
+                .and()
+                .exceptionHandling().accessDeniedHandler(new AccessDeniedHandlerCustom())
                 .and()
                  //인증실패시
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointCustom);*/
+                .exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPointCustom())
                 .and()
                 //jwt 인증 필터
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

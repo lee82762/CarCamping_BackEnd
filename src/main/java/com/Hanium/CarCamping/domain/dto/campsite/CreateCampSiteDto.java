@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,7 +17,7 @@ public class CreateCampSiteDto {
     private String name;
     @NotBlank
     private String address;
-    private String image;
+    private String images;
     @NotBlank
     private String explanation;
     private String facilities;

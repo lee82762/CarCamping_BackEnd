@@ -7,11 +7,15 @@ import com.Hanium.CarCamping.domain.dto.member.UpdateNickNameDto;
 import com.Hanium.CarCamping.domain.dto.member.UpdatePasswordDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
+import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class MemberUpdateService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
+    private final S3Uploader s3Uploader;
 
     public void memberNicknameUpdate(UpdateNickNameDto updateDto, String email){
         if (memberRepository.existsByNickname((updateDto.getNickname()))) {
@@ -39,5 +44,11 @@ public class MemberUpdateService {
         }
         member.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
 
+    }
+
+    public void setProfilePhoto(MultipartFile multipartFile, String member_email) throws IOException {
+        Member member = memberRepository.findByEmail(member_email).orElseThrow(NoSuchMemberException::new);
+        String profile = s3Uploader.upload(multipartFile, "member");
+        member.setProfile(profile);
     }
 }
