@@ -21,14 +21,14 @@ public class Review_MemberController {
 
     @GetMapping("/review/{id}/up")
     public Result upReview(@RequestHeader("token") String token, @PathVariable Long id) {
-        Member member = jwtService.findMemberByToken(token);
-        reviewMemberService.createReviewMember(id,member.getId(),1);
+        jwtService.isUsable(token);
+        reviewMemberService.createReviewMember(id,jwtService.findEmailByJwt(token),1);
         return responseService.getSuccessResult();
     }
     @GetMapping("/review/{id}/down")
     public Result downReview(@RequestHeader("token") String token, @PathVariable Long id) {
-        Member member = jwtService.findMemberByToken(token);
-        reviewMemberService.createReviewMember(id,member.getId(),-1);
+        jwtService.isUsable(token);
+        reviewMemberService.createReviewMember(id,jwtService.findEmailByJwt(token),-1);
         return responseService.getSuccessResult();
     }
 

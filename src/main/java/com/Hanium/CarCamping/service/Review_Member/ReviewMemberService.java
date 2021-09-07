@@ -28,8 +28,8 @@ public class ReviewMemberService {
     private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
 
-public Long createReviewMember(Long review_id, Long member_id, int i) {
-    Member member = memberRepository.findById(member_id).orElseThrow(NoSuchMemberException::new);
+public Long createReviewMember(Long review_id, String email, int i) {
+    Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
     Review review = reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
     Review_Member review_member = Review_Member.createReview_Member(review, member, i);
 
