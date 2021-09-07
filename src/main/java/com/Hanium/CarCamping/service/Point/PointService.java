@@ -17,6 +17,7 @@ public class PointService {
     public void create(Member member,String content, int score) {
         Point point = Point.createPoint(member, content, score);
         member.setPoint(member.getPoint()+score);
+        System.out.println(member.getPoint());
         pointRepository.save(point);
     }
 }

@@ -2,6 +2,7 @@ package com.Hanium.CarCamping.service.CampSite;
 
 import com.Hanium.CarCamping.Exception.DuplicateCampSiteException;
 import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
+import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
@@ -9,6 +10,7 @@ import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
+import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +34,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CampsiteService {
+    private final MemberRepository memberRepository;
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
     private final RedisTemplate redisTemplate;
     private final S3Uploader s3Uploader;
     @Transactional
-    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, Member member)   {
+    public Long saveCampSite(CreateCampSiteDto createCampSiteDto, String email)   {
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
         if (byName.isPresent()) {
             if (byName.get().getRegion().toString().equals(createCampSiteDto.getRegion())) {
@@ -66,7 +70,8 @@ public class CampsiteService {
                 campSiteRepository.findAll();
     }
     @Transactional
-    public void deleteCampSite(Member member,Long campSite_id) {
+    public void deleteCampSite(String email,Long campSite_id) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         CampSite campSite = campSiteRepository.findById(campSite_id).orElseThrow(NoSuchCampSiteException::new);
         if (!campSite.getRegistrant().getId().equals(member.getId())) {
             throw new NotCampSiteRegisterException("차박지 등록자가 아닙니다");

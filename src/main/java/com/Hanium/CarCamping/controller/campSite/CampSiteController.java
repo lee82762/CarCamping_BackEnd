@@ -29,8 +29,7 @@ public class CampSiteController {
 
     @PostMapping("/camping/register")
     public Result registerCampSite(@RequestHeader("token") String token, @RequestBody CreateCampSiteDto createCampSiteDto)  {
-        Member memberByToken = jwtService.findMemberByToken(token);
-        campsiteService.saveCampSite(createCampSiteDto, memberByToken);
+        campsiteService.saveCampSite(createCampSiteDto,jwtService.findEmailByJwt(token));
         return responseService.getSuccessResult();
     }
 
@@ -57,8 +56,7 @@ public class CampSiteController {
     @DeleteMapping("/camping/delete/{campsite_id}")
     public Result deleteCampSite(@RequestHeader("token") String token, @PathVariable Long campsite_id) {
         jwtService.isUsable(token);
-        Member memberByToken = jwtService.findMemberByToken(token);
-        campsiteService.deleteCampSite(memberByToken, campsite_id);
+        campsiteService.deleteCampSite(jwtService.findEmailByJwt(token), campsite_id);
         return responseService.getSuccessResult();
     }
 

@@ -30,8 +30,8 @@ public class ReviewService {
     private final PointService pointService;
     private final RedisTemplate redisTemplate;
     @Transactional
-    public Long saveReview(CreateReviewDto createReviewDto, Long member_id, Long campSite_id) {
-        Member member = memberRepository.findById(member_id).orElseThrow(NoSuchMemberException::new);
+    public Long saveReview(CreateReviewDto createReviewDto, String email, Long campSite_id) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         CampSite campSite=campSiteRepository.findById(campSite_id).orElseThrow(NoSuchCampSiteException::new);
         Review save = reviewRepository.save(Review.createReview(createReviewDto, member, campSite));
         campSite.changeScore(save.getScore(),1);

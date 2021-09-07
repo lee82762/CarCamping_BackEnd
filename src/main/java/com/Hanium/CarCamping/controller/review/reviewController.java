@@ -29,8 +29,8 @@ public class reviewController {
     public Result registerReview(@RequestBody CreateReviewDto createReviewDto,
                                  @RequestHeader("token") String token,
                                  @PathVariable Long camping_id) {
-        Member memberByToken = jwtService.findMemberByToken(token);
-        reviewService.saveReview(createReviewDto, memberByToken.getId(), camping_id);
+        jwtService.isUsable(token);
+        reviewService.saveReview(createReviewDto, jwtService.findEmailByJwt(token), camping_id);
         return responseService.getSuccessResult();
     }
 
