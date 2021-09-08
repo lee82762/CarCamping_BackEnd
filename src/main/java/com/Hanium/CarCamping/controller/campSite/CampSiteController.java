@@ -2,10 +2,7 @@ package com.Hanium.CarCamping.controller.campSite;
 
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.Region;
-import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
-import com.Hanium.CarCamping.domain.dto.campsite.ResponseCampSiteDto;
-import com.Hanium.CarCamping.domain.dto.campsite.ResponseCampSiteListDto;
-import com.Hanium.CarCamping.domain.dto.campsite.ResponseCoordinateDto;
+import com.Hanium.CarCamping.domain.dto.campsite.*;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
@@ -66,10 +63,11 @@ public class CampSiteController {
         List<CampSite> allCampSiteList = campsiteService.getAllCampSiteList();
         return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
-    @GetMapping("camping/map")
-    public Result allCampSiteCoordinate(@RequestHeader("token") String token) {
+    @PostMapping("camping/map")
+    public Result allCampSiteCoordinate(@RequestHeader("token") String token,@RequestBody RegionDto regionDto) {
+        System.out.println(regionDto.getRegion());
         jwtService.isUsable(token);
-        List<CampSite> allCampSiteList = campsiteService.getAllCampSiteList();
+        List<CampSite> allCampSiteList = campsiteService.getCampSiteByRegion(Region.valueOf(regionDto.getRegion()));
         return responseService.getListResult(allCampSiteList.stream().map(ResponseCoordinateDto::convertToCoordinateDto).collect(Collectors.toList()));
     }
 
