@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 
 @Service
@@ -50,5 +49,9 @@ public class MemberUpdateService {
         Member member = memberRepository.findByEmail(member_email).orElseThrow(NoSuchMemberException::new);
         String profile = s3Uploader.upload(multipartFile, "member");
         member.setProfile(profile);
+    }
+    public void deleteProfile(String email) {
+        Member member= memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        member.setProfile(null);
     }
 }
