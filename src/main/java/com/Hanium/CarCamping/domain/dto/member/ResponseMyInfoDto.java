@@ -13,12 +13,14 @@ public class ResponseMyInfoDto {
     private String loginId;
     private String nickname;
     private int point;
+    private String profile;
     public static ResponseMyInfoDto convertToDto(Member member) {
         ResponseMyInfoDto responseMyInfoDto=new ResponseMyInfoDto();
         responseMyInfoDto.loginId= member.getEmail();
         responseMyInfoDto.member_id=member.getId();
         responseMyInfoDto.nickname=member.getNickname();
         responseMyInfoDto.point=member.getPoint();
+        responseMyInfoDto.profile=member.getProfile();
         return responseMyInfoDto;
     }
 }
