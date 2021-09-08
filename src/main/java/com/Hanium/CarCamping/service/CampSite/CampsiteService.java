@@ -92,8 +92,9 @@ public class CampsiteService {
     public List<CampSite> getCampSiteByRegionAndScoreASC(Region region) {
         return campSiteRepository.findByRegionOrderByScoreAsc(region);
     }
-
-
+    public List<CampSite> getCampSiteByRegion(Region region) {
+        return campSiteRepository.findByRegion(region);
+    }
 
 
     public  String[] getGeoDataByAddress(String completeAddress) {

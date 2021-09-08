@@ -15,7 +15,7 @@ public class ResponseCoordinateDto {
         ResponseCoordinateDto responseCoordinateDto=new ResponseCoordinateDto();
         responseCoordinateDto.campsite_id= campSite.getCampsite_id();
         responseCoordinateDto.lat=Float.valueOf(campSite.getLat());
-        responseCoordinateDto.lng=Float.valueOf(campSite.getLat());
+        responseCoordinateDto.lng=Float.valueOf(campSite.getLng());
         return responseCoordinateDto;
 
 
