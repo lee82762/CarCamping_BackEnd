@@ -49,6 +49,7 @@ public class memberController {
         memberUpdateService.memberNicknameUpdate(updateNickNameDto, email);
         return responseService.getSuccessResult();
     }
+
     @PostMapping(value = "/member/update/password")
     public Result main(@RequestHeader("token") String token, @RequestBody UpdatePasswordDto updatePasswordDto) {
         String email = jwtService.findEmailByJwt(token);
@@ -58,9 +59,9 @@ public class memberController {
 
 
     @DeleteMapping(value = "/memberDelete")
-    public Result deleteMember(@RequestHeader("token") String token,@RequestBody checkDto checkDto) {
+    public Result deleteMember(@RequestHeader("token") String token, @RequestBody checkDto checkDto) {
         jwtService.isUsable(token);
-        memberDeleteService.deleteMember(token,checkDto);
+        memberDeleteService.deleteMember(token, checkDto);
         return responseService.getSuccessResult();
     }
 
@@ -78,16 +79,24 @@ public class memberController {
     public Result checkNickName(@RequestBody checkDto check) {
         return responseService.getSingleResult(memberRepository.existsByNickname(check.getCheck()));
     }
-    @GetMapping(value="/myInfo")
-    public Result getMyInfo(@RequestHeader("token")String token) {
-        Member member=jwtService.findMemberByToken(token);
+
+    @GetMapping(value = "/myInfo")
+    public Result getMyInfo(@RequestHeader("token") String token) {
+        Member member = jwtService.findMemberByToken(token);
         return responseService.getSingleResult(ResponseMyInfoDto.convertToDto(jwtService.findMemberByToken(token)));
 
     }
-    @PostMapping(value="/updateProfile")
-    public Result changeProfileImage(@RequestParam("images") MultipartFile multipartFile,@RequestHeader("token")String token) throws IOException {
-        memberUpdateService.setProfilePhoto(multipartFile,jwtService.findEmailByJwt(token));
+
+    @PostMapping(value = "/updateProfile")
+    public Result changeProfileImage(@RequestParam("images") MultipartFile multipartFile, @RequestHeader("token") String token) throws IOException {
+        memberUpdateService.setProfilePhoto(multipartFile, jwtService.findEmailByJwt(token));
         return responseService.getSuccessResult();
     }
 
+    @DeleteMapping(value = "/deleteProfile")
+    public Result deleteProfile(@RequestHeader("token") String token) {
+        jwtService.isUsable(token);
+        memberUpdateService.deleteProfile(jwtService.findEmailByJwt(token));
+        return responseService.getSuccessResult();
+    }
 }
