@@ -61,6 +61,7 @@ public class Review {
         review.score= createReviewDto.getScore();
         review.date=LocalDateTime.now();
         review.recommend=0;
+        review.images= createReviewDto.getImages();
         review.setCampSite(campSite);
         review.setWriter(writer);
         return review;
