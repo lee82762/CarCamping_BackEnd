@@ -5,6 +5,7 @@ import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.Exception.NotReviewWriterException;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
+import com.Hanium.CarCamping.domain.dto.review.ResponseOneReviewDto;
 import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
@@ -56,9 +57,9 @@ public class ReviewService {
     public Review getReview(Long id) {
         return reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
     }
-    public ResponseReviewDto getReviewByDto(Long id) {
+    public ResponseOneReviewDto getReviewByDto(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
-        return ResponseReviewDto.convertToReviewDto(review);
+        return ResponseOneReviewDto.convertToOneReviewDto(review);
     }
 
 
@@ -84,4 +85,9 @@ public class ReviewService {
         CampSite campSite = campSiteRepository.findById(campsite_id).orElseThrow(NoSuchCampSiteException::new);
         return reviewRepository.findTop3ByCampSiteOrderByRecommendDesc(campSite);
     }
+    public List<Review> getMyReview(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return member.getReviewList();
+    }
+
 }

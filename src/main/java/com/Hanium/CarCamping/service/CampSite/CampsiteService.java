@@ -130,6 +130,10 @@ public class CampsiteService {
         }
         return null;
     }
+    public List<CampSite> getMyCampSite(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return campSiteRepository.findByRegistrant(member);
+    }
 
 /*    public  Float[] findGeoPoint(String location) {
 
