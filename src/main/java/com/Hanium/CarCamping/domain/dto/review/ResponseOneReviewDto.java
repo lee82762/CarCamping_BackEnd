@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 public class ResponseOneReviewDto {
     private Long review_id;
@@ -20,15 +19,15 @@ public class ResponseOneReviewDto {
     private Integer recommend;
     private String images;
     public static ResponseOneReviewDto convertToOneReviewDto(Review review) {
-        return ResponseOneReviewDto.builder()
-                .review_id(review.getReview_id())
-                .writer(review.getWriter().getNickname())
-                .title(review.getTitle())
-                .Score(review.getScore())
-                .date(review.getDate())
-                .contents(review.getContents())
-                .recommend(review.getRecommend())
-                .images(review.getImages())
-                .build();
+        ResponseOneReviewDto r=new ResponseOneReviewDto();
+        r.review_id= review.getReview_id();
+        r.writer=review.getWriter().getNickname();
+        r.title= review.getTitle();
+        r.Score= review.getScore();
+        r.contents= review.getContents();
+        r.date=review.getDate();
+        r.recommend=review.getRecommend();
+        r.images=review.getImages();
+        return r;
     }
 }
