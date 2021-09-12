@@ -1,6 +1,7 @@
 package com.Hanium.CarCamping.domain.dto.review;
 
 import com.Hanium.CarCamping.domain.entity.Review;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ResponseOneReviewDto {
     private Long review_id;
     private String writer;
