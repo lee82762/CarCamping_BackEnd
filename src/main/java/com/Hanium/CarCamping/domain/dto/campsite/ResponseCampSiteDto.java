@@ -22,6 +22,7 @@ public class ResponseCampSiteDto {
     //campsite 가져오는 부분 위도,경도 추가
     private String lat;
     private String lng;
+    private String facilities;
 
 
     public static ResponseCampSiteDto convertCampSiteDto(CampSite campSite) {
@@ -35,6 +36,7 @@ public class ResponseCampSiteDto {
                 .videoLink(campSite.getVideoLink())
                 .lat(campSite.getLat())
                 .lng(campSite.getLng())
+                .facilities(campSite.getFacilities())
                 .build();
     }
 }
