@@ -1,11 +1,18 @@
 package com.Hanium.CarCamping.controller.member;
 
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
+import com.Hanium.CarCamping.domain.dto.campsite.ResponseCampSiteListDto;
 import com.Hanium.CarCamping.domain.dto.member.*;
 import com.Hanium.CarCamping.domain.dto.response.Result;
+import com.Hanium.CarCamping.domain.dto.review.ResponseOneReviewDto;
+import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
+import com.Hanium.CarCamping.domain.entity.CampSite;
+import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
+import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
+import com.Hanium.CarCamping.service.Review.ReviewService;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import com.Hanium.CarCamping.service.member.MemberDeleteService;
 import com.Hanium.CarCamping.service.member.MemberSignInService;
@@ -16,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +38,8 @@ public class memberController {
     private final ResponseService responseService;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
+    private final ReviewService reviewService;
+    private final CampsiteService campsiteService;
 
     @PostMapping("/signIn")
     public Result signIn(@RequestBody signInDto signInDto) {
@@ -98,5 +109,17 @@ public class memberController {
         jwtService.isUsable(token);
         memberUpdateService.deleteProfile(jwtService.findEmailByJwt(token));
         return responseService.getSuccessResult();
+    }
+    @GetMapping(value="/myReview")
+    public Result getMyReview(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        List<Review> myReview = reviewService.getMyReview(jwtService.findEmailByJwt(token));
+        return responseService.getListResult(myReview.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
+    }
+    @GetMapping(value="/myCampSite")
+    public Result getMyCampSite(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        List<CampSite> myCampSite = campsiteService.getMyCampSite(jwtService.findEmailByJwt(token));
+        return responseService.getListResult(myCampSite.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
 }

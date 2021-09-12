@@ -2,6 +2,7 @@ package com.Hanium.CarCamping.repository;
 
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.entity.CampSite;
+import com.Hanium.CarCamping.domain.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,4 +24,5 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
     List<CampSite> findByRegionOrderByScoreDesc(Region region);
     List<CampSite> findByRegionOrderByScoreAsc(Region region);
 
+    List<CampSite> findByRegistrant(Member member);
 }
