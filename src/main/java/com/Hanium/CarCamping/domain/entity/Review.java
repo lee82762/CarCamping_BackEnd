@@ -33,7 +33,7 @@ public class Review {
 
     @Column(nullable = false)
     private LocalDateTime date;
-
+    private String images;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="campsite_id")
