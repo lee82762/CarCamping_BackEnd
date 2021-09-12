@@ -1,7 +1,10 @@
 package com.Hanium.CarCamping.service.S3Service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,4 +70,18 @@ public class S3Uploader {
 
         return Optional.empty();
     }
+
+
+    public void delete(String filename,String dirName) {
+        try {
+            amazonS3Client.deleteObject( new DeleteObjectRequest(bucket +"/"+dirName,filename));
+
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
