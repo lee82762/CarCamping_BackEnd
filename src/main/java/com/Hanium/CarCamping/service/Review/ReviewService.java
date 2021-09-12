@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,9 +86,9 @@ public class ReviewService {
         CampSite campSite = campSiteRepository.findById(campsite_id).orElseThrow(NoSuchCampSiteException::new);
         return reviewRepository.findTop3ByCampSiteOrderByRecommendDesc(campSite);
     }
-    public List<Review> getMyReview(String email){
+    public List<ResponseReviewDto> getMyReview(String email){
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        return member.getReviewList();
+        return member.getReviewList().stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
     }
 
 }

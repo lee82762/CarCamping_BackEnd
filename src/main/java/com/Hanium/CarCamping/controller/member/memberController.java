@@ -113,8 +113,7 @@ public class memberController {
     @GetMapping(value="/myReview")
     public Result getMyReview(@RequestHeader("token")String token){
         jwtService.isUsable(token);
-        List<Review> myReview = reviewService.getMyReview(jwtService.findEmailByJwt(token));
-        return responseService.getListResult(myReview.stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList()));
+        return responseService.getListResult(reviewService.getMyReview(jwtService.findEmailByJwt(token)));
     }
     @GetMapping(value="/myCampSite")
     public Result getMyCampSite(@RequestHeader("token")String token){
