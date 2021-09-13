@@ -15,7 +15,7 @@ public class ResponseReviewDto {
     private Float Score;
     private LocalDateTime date;
     private Integer recommend;
-
+    private String images;
     public static ResponseReviewDto convertToReviewDto(Review review) {
         return ResponseReviewDto.builder()
                 .review_id(review.getReview_id())
@@ -24,6 +24,7 @@ public class ResponseReviewDto {
                 .Score(review.getScore())
                 .date(review.getDate())
                 .recommend(review.getRecommend())
+                .images(review.getImages())
                 .build();
     }
 }

@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CreateReviewDto {
     private String title;
     private String content;
+    private String images;
     private Float score;
 }

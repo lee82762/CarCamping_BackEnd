@@ -33,7 +33,7 @@ public class Review {
 
     @Column(nullable = false)
     private LocalDateTime date;
-
+    private String images;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="campsite_id")
@@ -61,6 +61,7 @@ public class Review {
         review.score= createReviewDto.getScore();
         review.date=LocalDateTime.now();
         review.recommend=0;
+        review.images= createReviewDto.getImages();
         review.setCampSite(campSite);
         review.setWriter(writer);
         return review;
