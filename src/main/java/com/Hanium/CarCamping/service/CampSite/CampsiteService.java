@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
-import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
@@ -19,10 +18,8 @@ import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -42,7 +39,7 @@ public class CampsiteService {
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, String email)   {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
+        Optional<CampSite> byName = campSiteRepository.findByNameLike(createCampSiteDto.getName());
         if (byName.isPresent()) {
             if (byName.get().getRegion().toString().equals(createCampSiteDto.getRegion())) {
                 throw new DuplicateCampSiteException("이미 등록되어있는 차박지입니다");
@@ -63,7 +60,7 @@ public class CampsiteService {
     }
 
     public CampSite findByName(String name) {
-        return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
+        return campSiteRepository.findByNameLike(name).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> getAllCampSiteList() {
         return
@@ -92,6 +89,14 @@ public class CampsiteService {
     public List<CampSite> getCampSiteByRegionAndScoreASC(Region region) {
         return campSiteRepository.findByRegionOrderByScoreAsc(region);
     }
+    public List<CampSite> getCampSiteByRegionAndDateASC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idAsc(region);
+    }
+    public List<CampSite> getCampSiteByRegionAndDateDESC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idDesc(region);
+    }
+
+
     public List<CampSite> getCampSiteByRegion(Region region) {
         return campSiteRepository.findByRegion(region);
     }
@@ -129,10 +134,6 @@ public class CampsiteService {
             e.printStackTrace();
         }
         return null;
-    }
-    public List<CampSite> getMyCampSite(String email){
-        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        return campSiteRepository.findByRegistrant(member);
     }
 
 /*    public  Float[] findGeoPoint(String location) {
