@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
-import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
@@ -19,10 +18,8 @@ import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -130,32 +127,29 @@ public class CampsiteService {
         }
         return null;
     }
+    public List<CampSite> getMyCampSite(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return campSiteRepository.findByRegistrant(member);
+    }
 
 /*    public  Float[] findGeoPoint(String location) {
-
         if (location == null)
             return null;
-
         // setAddress : 변환하려는 주소 (경기도 성남시 분당구 등)
         // setLanguate : 인코딩 설정
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(location).setLanguage("ko").getGeocoderRequest();
-
         try {
             Geocoder geocoder = new Geocoder();
             GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
-
             if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty()) {
-
                 GeocoderResult geocoderResult=geocoderResponse.getResults().iterator().next();
                 LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
-
                 Float[] coords = new Float[2];
                 coords[0] = latitudeLongitude.getLat().floatValue();
                 coords[1] = latitudeLongitude.getLng().floatValue();
                 System.out.println(coords[0]);
                 System.out.println(coords[1]);
                 return coords;
-
             }
         } catch (IOException ex) {
             ex.printStackTrace();
