@@ -81,6 +81,13 @@ public class CampsiteService {
             campSiteRepository.delete(campSite);
         }
     }
+    public List<CampSite> getCampSiteByRegionAndDateASC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idAsc(region);
+    }
+    public List<CampSite> getCampSiteByRegionAndDateDESC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idDesc(region);
+    }
+
 
     public List<CampSite> getCampSiteByScore() {
         return campSiteRepository.findAllByOrderByScoreDesc();
