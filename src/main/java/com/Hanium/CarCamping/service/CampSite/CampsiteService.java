@@ -39,7 +39,7 @@ public class CampsiteService {
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, String email)   {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        Optional<CampSite> byName = campSiteRepository.findByName(createCampSiteDto.getName());
+        Optional<CampSite> byName = campSiteRepository.findByNameLike(createCampSiteDto.getName());
         if (byName.isPresent()) {
             if (byName.get().getRegion().toString().equals(createCampSiteDto.getRegion())) {
                 throw new DuplicateCampSiteException("이미 등록되어있는 차박지입니다");
@@ -60,7 +60,7 @@ public class CampsiteService {
     }
 
     public CampSite findByName(String name) {
-        return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
+        return campSiteRepository.findByNameLike(name).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> getAllCampSiteList() {
         return
@@ -89,6 +89,14 @@ public class CampsiteService {
     public List<CampSite> getCampSiteByRegionAndScoreASC(Region region) {
         return campSiteRepository.findByRegionOrderByScoreAsc(region);
     }
+    public List<CampSite> getCampSiteByRegionAndDateASC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idAsc(region);
+    }
+    public List<CampSite> getCampSiteByRegionAndDateDESC(Region region) {
+        return campSiteRepository.findByRegionOrderByCampsite_idDesc(region);
+    }
+
+
     public List<CampSite> getCampSiteByRegion(Region region) {
         return campSiteRepository.findByRegion(region);
     }
@@ -127,29 +135,32 @@ public class CampsiteService {
         }
         return null;
     }
-    public List<CampSite> getMyCampSite(String email){
-        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        return campSiteRepository.findByRegistrant(member);
-    }
 
 /*    public  Float[] findGeoPoint(String location) {
+
         if (location == null)
             return null;
+
         // setAddress : 변환하려는 주소 (경기도 성남시 분당구 등)
         // setLanguate : 인코딩 설정
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(location).setLanguage("ko").getGeocoderRequest();
+
         try {
             Geocoder geocoder = new Geocoder();
             GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+
             if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty()) {
+
                 GeocoderResult geocoderResult=geocoderResponse.getResults().iterator().next();
                 LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
+
                 Float[] coords = new Float[2];
                 coords[0] = latitudeLongitude.getLat().floatValue();
                 coords[1] = latitudeLongitude.getLng().floatValue();
                 System.out.println(coords[0]);
                 System.out.println(coords[1]);
                 return coords;
+
             }
         } catch (IOException ex) {
             ex.printStackTrace();

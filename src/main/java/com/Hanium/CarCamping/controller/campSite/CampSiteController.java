@@ -40,6 +40,27 @@ public class CampSiteController {
         return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
 
+    @GetMapping("/camping/{location}/gradeasc")
+    public Result getLocationCampSiteListByGradeAsc(@RequestHeader("token") String token, @PathVariable String location) {
+        jwtService.isUsable(token);
+        List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndScoreASC(Region.valueOf(location));
+        return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/camping/{location}/dateasc")
+    public Result getLocationCampSiteListByDateAsc(@RequestHeader("token") String token, @PathVariable String location) {
+        jwtService.isUsable(token);
+        List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndDateASC(Region.valueOf(location));
+        return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/camping/{location}/datedesc")
+    public Result getLocationCampSiteListByDateDesc(@RequestHeader("token") String token, @PathVariable String location) {
+        jwtService.isUsable(token);
+        List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndDateDESC(Region.valueOf(location));
+        return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
     @GetMapping("/camping/{campsite_id}")
     public Result getSingleCampSite(@RequestHeader("token") String token, @PathVariable Long campsite_id) {
         jwtService.isUsable(token);
