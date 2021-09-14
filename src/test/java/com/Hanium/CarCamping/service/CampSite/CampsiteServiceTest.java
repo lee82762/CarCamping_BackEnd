@@ -1,7 +1,6 @@
 package com.Hanium.CarCamping.service.CampSite;
 
 import com.Hanium.CarCamping.Exception.DuplicateCampSiteException;
-import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.dto.member.createDto;
 import com.Hanium.CarCamping.domain.dto.member.getDto;
