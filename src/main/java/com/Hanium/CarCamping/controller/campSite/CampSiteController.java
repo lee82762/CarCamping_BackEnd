@@ -3,6 +3,7 @@ package com.Hanium.CarCamping.controller.campSite;
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.*;
+import com.Hanium.CarCamping.domain.dto.member.checkDto;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
@@ -90,10 +91,16 @@ public class CampSiteController {
         List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndDateDESC(Region.valueOf(location));
         return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
-    @GetMapping("/camping/search")
-    public Result searchCampSite(@RequestHeader("token") String token, @RequestHeader("word") String word) {
+    @PostMapping("/camping/search")
+    public Result searchCampSite(@RequestHeader("token") String token, @RequestBody checkDto checkdto) {
         jwtService.isUsable(token);
-        List<CampSite> result = campsiteService.getCampSiteBySearchWord(word);
+        List<CampSite> result = campsiteService.getCampSiteBySearchWord(checkdto.getCheck());
+        return responseService.getListResult(result.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+    @PostMapping("/camping/search/region")
+    public Result searchCampSiteByRegionAndWord(@RequestHeader("token") String token,@RequestBody FindCampSiteDto findCampSiteDto) {
+        jwtService.isUsable(token);
+        List<CampSite> result = campsiteService.getCampSiteBySearchWordAndRegion(findCampSiteDto.getWord(),Region.valueOf(findCampSiteDto.getRegion()));
         return responseService.getListResult(result.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
 

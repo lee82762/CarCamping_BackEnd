@@ -27,11 +27,11 @@ class CampsiteServiceTest {
     @Autowired MemberRepository memberRepository;
     @Autowired CampsiteService campsiteService;
 
-/*
+
     @Test
     public void 검색테스트() throws Exception {
         //given
-        List<CampSite> result = campsiteService.getCampSiteBySearchWord("테스트");
+        List<CampSite> result = campsiteService.getCampSiteBySearchWordAndRegion("테스트",Region.valueOf("충청도"));
 
         //when
         for (CampSite campSite : result) {
@@ -41,7 +41,7 @@ class CampsiteServiceTest {
         //then
 
     }
-
+/*
     @Test
     public void 차박지_등록() throws Exception {
         //given

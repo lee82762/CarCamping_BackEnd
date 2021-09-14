@@ -146,6 +146,9 @@ public class CampsiteService {
         return campSiteRepository.findByNameContainingOrderByScoreDesc(word);
 
     }
+    public List<CampSite> getCampSiteBySearchWordAndRegion(String word,Region region) {
+        return campSiteRepository.findByNameContainingAndRegionOrderByScoreDesc(word,region);
+    }
 /*    public  Float[] findGeoPoint(String location) {
 
         if (location == null)
