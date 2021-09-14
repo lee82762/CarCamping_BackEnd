@@ -31,4 +31,5 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
     List<CampSite> findByRegionOrderByCampsite_idDesc(@Param("location") Region location);
     List<CampSite> findByRegistrant(Member member);
     List<CampSite> findByNameContainingOrderByScoreDesc(String name);
+    List<CampSite> findByNameContainingAndRegionOrderByScoreDesc(String name,Region region);
 }
