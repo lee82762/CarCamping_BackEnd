@@ -141,7 +141,9 @@ public class CampsiteService {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         return campSiteRepository.findByRegistrant(member);
     }
-
+    public List<CampSite> getCampSiteBySearchWord(String word) {
+        return campSiteRepository.findByNameContaining(word);
+    }
 /*    public  Float[] findGeoPoint(String location) {
 
         if (location == null)
