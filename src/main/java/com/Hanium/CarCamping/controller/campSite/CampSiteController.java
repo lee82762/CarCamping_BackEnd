@@ -90,8 +90,8 @@ public class CampSiteController {
         List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndDateDESC(Region.valueOf(location));
         return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
-    @GetMapping("/camping/{word}")
-    public Result searchCampSite(@RequestHeader("token") String token, @PathVariable("word") String word) {
+    @GetMapping("/camping/search")
+    public Result searchCampSite(@RequestHeader("token") String token, @RequestHeader("word") String word) {
         jwtService.isUsable(token);
         List<CampSite> result = campsiteService.getCampSiteBySearchWord(word);
         return responseService.getListResult(result.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
