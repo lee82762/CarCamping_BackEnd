@@ -30,5 +30,5 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
     @Query("select c from CampSite c where c.region = :location order by c.campsite_id DESC")
     List<CampSite> findByRegionOrderByCampsite_idDesc(@Param("location") Region location);
     List<CampSite> findByRegistrant(Member member);
-    List<CampSite> findByNameContainingOrderByScore(String name);
+    List<CampSite> findByNameContainingOrderByScoreDesc(String name);
 }
