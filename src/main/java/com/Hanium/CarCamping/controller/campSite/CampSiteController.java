@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CampSiteController {
     private final CampsiteService campsiteService;
-    private final ResponseService
-            responseService;
+    private final ResponseService responseService;
     private final JwtService jwtService;
 
     @PostMapping("/camping/register")
