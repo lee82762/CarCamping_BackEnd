@@ -40,7 +40,7 @@ public class CampSite {
     private float scoreSum;
     private float reviewNum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registrant_id")
     private Member registrant;
 
