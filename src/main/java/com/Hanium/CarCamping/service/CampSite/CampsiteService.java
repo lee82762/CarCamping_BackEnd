@@ -142,7 +142,7 @@ public class CampsiteService {
         return campSiteRepository.findByRegistrant(member);
     }
     public List<CampSite> getCampSiteBySearchWord(String word) {
-        return campSiteRepository.findByNameContaining(word);
+        return campSiteRepository.findByNameContainingOrderByScore(word);
     }
 /*    public  Float[] findGeoPoint(String location) {
 
