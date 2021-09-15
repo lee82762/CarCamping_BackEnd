@@ -6,14 +6,11 @@ import com.Hanium.CarCamping.domain.dto.campsite.*;
 import com.Hanium.CarCamping.domain.dto.member.checkDto;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
-import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,12 +55,36 @@ public class CampSiteController {
         return responseService.getSuccessResult();
     }
 
-    @GetMapping("camping/all")
-    public Result allCampSite(@RequestHeader("token") String token) {
+    @GetMapping("camping/all/dateasc")
+    public Result allCampSiteAsc(@RequestHeader("token") String token) {
         jwtService.isUsable(token);
         List<CampSite> allCampSiteList = campsiteService.getAllCampSiteList();
         return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
+    @GetMapping("camping/all/datedesc")
+    public Result allCampSiteDesc(@RequestHeader("token") String token) {
+        jwtService.isUsable(token);
+        List<CampSite> allCampSiteList = campsiteService.getAllCampSiteListDesc();
+        return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping("camping/all/scoreasc")
+    public Result allCampSiteScoreAsc(@RequestHeader("token") String token) {
+        jwtService.isUsable(token);
+        List<CampSite> allCampSiteList = campsiteService.getAllCampSiteListScoreAsc();
+        return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+
+    @GetMapping("camping/all/scoredesc")
+    public Result allCampSiteScoreDesc(@RequestHeader("token") String token) {
+        jwtService.isUsable(token);
+        List<CampSite> allCampSiteList = campsiteService.getAllCampSiteListScoreDesc();
+        return responseService.getListResult(allCampSiteList.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+
+
     @PostMapping("camping/map")
     public Result allCampSiteCoordinate(@RequestHeader("token") String token,@RequestBody RegionDto regionDto) {
         System.out.println(regionDto.getRegion());
@@ -91,6 +112,13 @@ public class CampSiteController {
         List<CampSite> byRegion = campsiteService.getCampSiteByRegionAndDateDESC(Region.valueOf(location));
         return responseService.getListResult(byRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
+
+ /*   @GetMapping("/camping/all")
+    public Result getCampSiteListAll(@RequestHeader("token") String token) {
+        jwtService.isUsable(token);
+        List<CampSite> allRegion = campsiteService.getAllCampSiteList();
+        return responseService.getListResult(allRegion.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }*/
     @PostMapping("/camping/search")
     public Result searchCampSite(@RequestHeader("token") String token, @RequestBody checkDto checkdto) {
         jwtService.isUsable(token);

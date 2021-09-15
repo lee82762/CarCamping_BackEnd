@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.Exception.NoSuchMemberException;
 import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
-import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
@@ -19,10 +18,8 @@ import org.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -66,9 +63,20 @@ public class CampsiteService {
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
     }
     public List<CampSite> getAllCampSiteList() {
-        return
-                campSiteRepository.findAll();
+        return campSiteRepository.findAll();
     }
+    public List<CampSite> getAllCampSiteListDesc() {
+        return campSiteRepository.findAllByOrderByCampsite_idDesc();
+    }
+    public List<CampSite> getAllCampSiteListScoreAsc() {
+        return campSiteRepository.findAllByOrderByScoreAsc();
+    }
+
+    public List<CampSite> getAllCampSiteListScoreDesc() {
+        return campSiteRepository.findAllByOrderByScoreDesc();
+    }
+
+
     @Transactional
     public void deleteCampSite(String email,Long campSite_id) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);

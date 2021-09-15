@@ -21,7 +21,7 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
 
     Optional<CampSite> findByName(String name);
 
-    List<CampSite> findAllByOrderByScoreDesc();
+
     List<CampSite> findByRegionOrderByScoreDesc(Region region);
     List<CampSite> findByRegionOrderByScoreAsc(Region region);
     @Query("select c from CampSite c where c.region = :location order by c.campsite_id ASC")
@@ -29,7 +29,15 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
 
     @Query("select c from CampSite c where c.region = :location order by c.campsite_id DESC")
     List<CampSite> findByRegionOrderByCampsite_idDesc(@Param("location") Region location);
+
     List<CampSite> findByRegistrant(Member member);
     List<CampSite> findByNameContainingOrderByScoreDesc(String name);
     List<CampSite> findByNameContainingAndRegionOrderByScoreDesc(String name,Region region);
+
+    List<CampSite> findAll();
+    @Query("select c from CampSite c order by c.campsite_id DESC")
+    List<CampSite> findAllByOrderByCampsite_idDesc();
+    List<CampSite> findAllByOrderByScoreAsc();
+    List<CampSite> findAllByOrderByScoreDesc();
+
 }
