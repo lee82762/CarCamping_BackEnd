@@ -2,7 +2,6 @@ package com.Hanium.CarCamping.domain.dto.review;
 
 import com.Hanium.CarCamping.domain.entity.Review;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,10 +19,12 @@ public class ResponseOneReviewDto {
     private LocalDateTime date;
     private Integer recommend;
     private String images;
+    private String profile;
     public static ResponseOneReviewDto convertToOneReviewDto(Review review) {
         ResponseOneReviewDto r=new ResponseOneReviewDto();
         r.review_id= review.getReview_id();
         r.writer=review.getWriter().getNickname();
+        r.profile=review.getWriter().getProfile();
         r.title= review.getTitle();
         r.Score= review.getScore();
         r.contents= review.getContents();
