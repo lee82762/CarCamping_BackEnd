@@ -7,9 +7,11 @@ import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
 import com.Hanium.CarCamping.domain.Region;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
+import com.Hanium.CarCamping.domain.entity.WaitingCampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
+import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
 import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +37,8 @@ public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
     private final RedisTemplate redisTemplate;
-    private final S3Uploader s3Uploader;
+    private final WaitingCampSiteRepository waitingCampSiteRepository;
+
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, String email)   {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
@@ -45,11 +48,13 @@ public class CampsiteService {
                 throw new DuplicateCampSiteException("이미 등록되어있는 차박지입니다");
             }
         }
-        CampSite save = campSiteRepository.save(CampSite.createCampSite(createCampSiteDto, member,getGeoDataByAddress(createCampSiteDto.getAddress())));
-        pointService.create(member,"차박지 등록",100);
-        redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
-        return save.getCampsite_id();
+        WaitingCampSite save = waitingCampSiteRepository.save(WaitingCampSite.createCampSite(createCampSiteDto, member,getGeoDataByAddress(createCampSiteDto.getAddress())));
+        //pointService.create(member,"차박지 등록",100);
+        //redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
+        return save.getWaitingCampSite_id();
     }
+
+
 
     public CampSite findById(Long id) {
         return campSiteRepository.findById(id).orElseThrow(NoSuchCampSiteException::new);

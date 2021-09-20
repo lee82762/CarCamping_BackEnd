@@ -65,19 +65,19 @@ public class CampSite {
 
 
 
-    public static CampSite createCampSite(CreateCampSiteDto createCampSiteDto, Member member, String[] geodata) {
+    public static CampSite convertToCampSite(WaitingCampSite waitingCampSite) {
         CampSite campSite = new CampSite();
-        campSite.name= createCampSiteDto.getName();
-        campSite.address= createCampSiteDto.getAddress();
+        campSite.name= waitingCampSite.getName();
+        campSite.address= waitingCampSite.getAddress();
         campSite.score= 0f;
-        campSite.region=Region.valueOf(createCampSiteDto.getRegion());
-        campSite.explanation= createCampSiteDto.getExplanation();
-        campSite.videoLink= createCampSiteDto.getVideoLink();
-        campSite.images=createCampSiteDto.getImages();
-        campSite.lat=geodata[0];
-        campSite.lng=geodata[1];
-        campSite.registrant=member;
-        campSite.facilities= createCampSiteDto.getFacilities();
+        campSite.region=waitingCampSite.getRegion();
+        campSite.explanation= waitingCampSite.getExplanation();
+        campSite.videoLink= waitingCampSite.getVideoLink();
+        campSite.images=waitingCampSite.getImages();
+        campSite.lat= waitingCampSite.getLat();
+        campSite.lng= waitingCampSite.getLng();
+        campSite.registrant=waitingCampSite.getRegistrant();
+        campSite.facilities= waitingCampSite.getFacilities();
         return campSite;
 
     }
