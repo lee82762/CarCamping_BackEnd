@@ -58,6 +58,7 @@ public class ReviewService {
     public Review getReview(Long id) {
         return reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
     }
+
     public ResponseOneReviewDto getReviewByDto(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
         return ResponseOneReviewDto.convertToOneReviewDto(review);

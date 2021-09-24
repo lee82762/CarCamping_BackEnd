@@ -13,7 +13,6 @@ import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
-import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,9 +63,17 @@ public class CampsiteService {
         return campSiteRepository.findByRegion(region);
     }
 
+
     public CampSite findByName(String name) {
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
     }
+
+    @Transactional(readOnly = true)
+    public String findNickName(String name) {
+        return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new).getRegistrant().getNickname();
+    }
+
+
     public List<CampSite> getAllCampSiteList() {
         return campSiteRepository.findAll();
     }

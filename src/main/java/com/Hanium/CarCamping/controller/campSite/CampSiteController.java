@@ -31,7 +31,10 @@ public class CampSiteController {
     @GetMapping("/camping")
     public Result getByName(@RequestHeader("token") String token, @RequestParam String name) {
         jwtService.isUsable(token);
-        return responseService.getSingleResult(ResponseCampSiteDto.convertCampSiteDto(campsiteService.findByName(name)));
+        CampSite campSite = campsiteService.findByName(name);
+        String nickName = campsiteService.findNickName(name);
+        System.out.println(nickName);
+        return responseService.getSingleResult(ResponseCampSiteDto.convertCampSiteDto(campSite,nickName));
     }
 
     @GetMapping("/camping/{location}/grade")
@@ -45,7 +48,8 @@ public class CampSiteController {
     public Result getSingleCampSite(@RequestHeader("token") String token, @PathVariable Long campsite_id) {
         jwtService.isUsable(token);
         CampSite result = campsiteService.findById(campsite_id);
-        return responseService.getSingleResult(ResponseCampSiteDto.convertCampSiteDto(result));
+        String nickName = campsiteService.findNickName(result.getName());
+        return responseService.getSingleResult(ResponseCampSiteDto.convertCampSiteDto(result,nickName));
     }
 
     @DeleteMapping("/camping/delete/{campsite_id}")
