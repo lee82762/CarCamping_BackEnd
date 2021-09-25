@@ -10,4 +10,8 @@ public interface PointRepository extends JpaRepository<Point,Long> {
 
     @Query("select p from Point p join fetch p.owner m where p.owner.id=:member_id")
     List<Point> findByMemberID(Long member_id);
+
+
+    @Query("select p from Point p join fetch p.owner m where p.owner.id=:member_id order by p.id DESC ")
+    List<Point> findByMemberIDDesc(Long member_id);
 }
