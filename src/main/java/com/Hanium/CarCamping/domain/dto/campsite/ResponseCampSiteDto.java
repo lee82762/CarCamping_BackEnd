@@ -1,6 +1,7 @@
 package com.Hanium.CarCamping.domain.dto.campsite;
 
 import com.Hanium.CarCamping.domain.entity.CampSite;
+import com.Hanium.CarCamping.service.CampSite.CampsiteService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 
+
 public class ResponseCampSiteDto {
+    private static CampsiteService campsiteService;
+
     private Long campsite_id;
     private String name;
     private String address;
@@ -23,9 +27,10 @@ public class ResponseCampSiteDto {
     private String lat;
     private String lng;
     private String facilities;
+    private String registrant;
 
 
-    public static ResponseCampSiteDto convertCampSiteDto(CampSite campSite) {
+    public static ResponseCampSiteDto convertCampSiteDto(CampSite campSite,String nickname) {
         return ResponseCampSiteDto.builder()
                 .campsite_id(campSite.getCampsite_id())
                 .name(campSite.getName())
@@ -37,6 +42,7 @@ public class ResponseCampSiteDto {
                 .lat(campSite.getLat())
                 .lng(campSite.getLng())
                 .facilities(campSite.getFacilities())
+                .registrant(nickname)
                 .build();
     }
 }

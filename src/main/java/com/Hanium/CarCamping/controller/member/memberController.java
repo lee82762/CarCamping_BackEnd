@@ -4,10 +4,7 @@ import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.dto.campsite.ResponseCampSiteListDto;
 import com.Hanium.CarCamping.domain.dto.member.*;
 import com.Hanium.CarCamping.domain.dto.response.Result;
-import com.Hanium.CarCamping.domain.dto.review.ResponseOneReviewDto;
-import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
-import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.CampSite.CampsiteService;
@@ -115,10 +112,44 @@ public class memberController {
         jwtService.isUsable(token);
         return responseService.getListResult(reviewService.getMyReview(jwtService.findEmailByJwt(token)));
     }
+
+    //리뷰 날짜 역순 정렬
+    @GetMapping(value="/myReviewDesc")
+    public Result getMyReviewDesc(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        return responseService.getListResult(reviewService.getMyReviewDesc(jwtService.findEmailByJwt(token)));
+    }
+
+    //리뷰 점수 역순 정렬
+    @GetMapping(value="/myReviewScoreDesc")
+    public Result getMyReviewScoreDesc(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        return responseService.getListResult(reviewService.getMyReviewScoreDesc(jwtService.findEmailByJwt(token)));
+    }
+
+    //리뷰 점수  정렬
+    @GetMapping(value="/myReviewScore")
+    public Result getMyReviewScore(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        return responseService.getListResult(reviewService.getMyReviewScore(jwtService.findEmailByJwt(token)));
+    }
+
+
     @GetMapping(value="/myCampSite")
     public Result getMyCampSite(@RequestHeader("token")String token){
         jwtService.isUsable(token);
         List<CampSite> myCampSite = campsiteService.getMyCampSite(jwtService.findEmailByJwt(token));
         return responseService.getListResult(myCampSite.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
     }
+
+    //myCampsite desc 정렬 추가
+    @GetMapping(value="/myCampSiteDesc")
+    public Result getMyCampSiteDesc(@RequestHeader("token")String token){
+        jwtService.isUsable(token);
+        List<CampSite> myCampSite = campsiteService.getMyCampSiteDesc(jwtService.findEmailByJwt(token));
+        return responseService.getListResult(myCampSite.stream().map(ResponseCampSiteListDto::convertResponseCampSiteDto).collect(Collectors.toList()));
+    }
+
+
+
 }

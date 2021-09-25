@@ -31,12 +31,17 @@ public interface CampSiteRepository extends JpaRepository<CampSite,Long> {
     List<CampSite> findByRegionOrderByCampsite_idDesc(@Param("location") Region location);
 
     List<CampSite> findByRegistrant(Member member);
+    //정렬 필요
+    @Query("select c from CampSite c join fetch c.registrant m where c.registrant.id=:member_id order by c.campsite_id DESC")
+    List<CampSite> findByRegistrantOrderByCampsite_id(Long member_id);
+
     List<CampSite> findByNameContainingOrderByScoreDesc(String name);
     List<CampSite> findByNameContainingAndRegionOrderByScoreDesc(String name,Region region);
 
     List<CampSite> findAll();
     @Query("select c from CampSite c order by c.campsite_id DESC")
     List<CampSite> findAllByOrderByCampsite_idDesc();
+
     List<CampSite> findAllByOrderByScoreAsc();
     List<CampSite> findAllByOrderByScoreDesc();
 

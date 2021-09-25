@@ -58,6 +58,7 @@ public class ReviewService {
     public Review getReview(Long id) {
         return reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
     }
+
     public ResponseOneReviewDto getReviewByDto(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(NoSuchMemberException::new);
         return ResponseOneReviewDto.convertToOneReviewDto(review);
@@ -89,6 +90,22 @@ public class ReviewService {
     public List<ResponseReviewDto> getMyReview(String email){
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         return member.getReviewList().stream().map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
+    }
+
+
+    public List<ResponseReviewDto> getMyReviewDesc(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return member.getReviewList().stream().sorted(((o1, o2) -> o2.getReview_id().compareTo(o1.getReview_id()))).map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
+    }
+
+    public List<ResponseReviewDto> getMyReviewScoreDesc(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return member.getReviewList().stream().sorted(((o1, o2) -> o2.getScore().compareTo(o1.getScore()))).map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
+    }
+
+    public List<ResponseReviewDto> getMyReviewScore(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return member.getReviewList().stream().sorted(((o1, o2) -> o1.getScore().compareTo(o2.getScore()))).map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
     }
 
 }

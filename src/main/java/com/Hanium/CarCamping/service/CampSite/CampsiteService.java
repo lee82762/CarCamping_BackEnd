@@ -13,7 +13,6 @@ import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
-import com.Hanium.CarCamping.service.S3Service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,14 +58,23 @@ public class CampsiteService {
     public CampSite findById(Long id) {
         return campSiteRepository.findById(id).orElseThrow(NoSuchCampSiteException::new);
     }
+
     public List<CampSite> findByRegion(Region region) {
         System.out.println(region.name());
         return campSiteRepository.findByRegion(region);
     }
 
+
     public CampSite findByName(String name) {
         return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new);
     }
+
+    @Transactional(readOnly = true)
+    public String findNickName(String name) {
+        return campSiteRepository.findByName(name).orElseThrow(NoSuchCampSiteException::new).getRegistrant().getNickname();
+    }
+
+
     public List<CampSite> getAllCampSiteList() {
         return campSiteRepository.findAll();
     }
@@ -154,6 +162,14 @@ public class CampsiteService {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         return campSiteRepository.findByRegistrant(member);
     }
+
+    //mypage desc 정렬 추가
+    public List<CampSite> getMyCampSiteDesc(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return campSiteRepository.findByRegistrantOrderByCampsite_id(member.getId());
+    }
+
+
     public List<CampSite> getCampSiteBySearchWord(String word) {
 
         return campSiteRepository.findByNameContainingOrderByScoreDesc(word);

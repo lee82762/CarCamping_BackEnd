@@ -20,6 +20,7 @@ public class ResponseOneReviewDto {
     private Integer recommend;
     private String images;
     private String profile;
+    private String name;
     public static ResponseOneReviewDto convertToOneReviewDto(Review review) {
         ResponseOneReviewDto r=new ResponseOneReviewDto();
         r.review_id= review.getReview_id();
@@ -31,6 +32,7 @@ public class ResponseOneReviewDto {
         r.date=review.getDate();
         r.recommend=review.getRecommend();
         r.images=review.getImages();
+        r.name=review.getCampSite().getName();
         return r;
     }
 }
