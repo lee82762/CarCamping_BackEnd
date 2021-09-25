@@ -58,6 +58,7 @@ public class CampsiteService {
     public CampSite findById(Long id) {
         return campSiteRepository.findById(id).orElseThrow(NoSuchCampSiteException::new);
     }
+
     public List<CampSite> findByRegion(Region region) {
         System.out.println(region.name());
         return campSiteRepository.findByRegion(region);
@@ -161,6 +162,14 @@ public class CampsiteService {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         return campSiteRepository.findByRegistrant(member);
     }
+
+    //mypage desc 정렬 추가
+    public List<CampSite> getMyCampSiteDesc(String email){
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        return campSiteRepository.findByRegistrantOrderByCampsite_id(member.getId());
+    }
+
+
     public List<CampSite> getCampSiteBySearchWord(String word) {
 
         return campSiteRepository.findByNameContainingOrderByScoreDesc(word);

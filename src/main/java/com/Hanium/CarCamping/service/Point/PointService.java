@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -20,4 +22,10 @@ public class PointService {
         System.out.println(member.getPoint());
         pointRepository.save(point);
     }
+
+    public List<Point> getAllPointList(Long member_id) {
+        return pointRepository.findByMemberID(member_id);
+    }
+
+
 }
