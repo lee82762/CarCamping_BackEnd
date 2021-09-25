@@ -27,5 +27,9 @@ public class PointService {
         return pointRepository.findByMemberID(member_id);
     }
 
+    public List<Point> getAllPointListDesc(Long member_id) {
+        return pointRepository.findByMemberIDDesc(member_id);
+    }
+
 
 }

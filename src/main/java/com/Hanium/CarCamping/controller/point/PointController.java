@@ -39,4 +39,18 @@ public class PointController {
         }
         return list;
     }
+
+    @GetMapping("/pointDesc")
+    public Result getByIDDesc(@RequestHeader("token") String token){
+        jwtService.isUsable(token);
+        Member member=jwtService.findMemberByToken(token);
+        List<Point> result= pointService.getAllPointListDesc(member.getId());
+        ListResult<ResponsePointDto> list=responseService.getListResult(result.stream().map(ResponsePointDto::convertToPointDto).collect(Collectors.toList()));
+        int answer=0;
+        for(int i=0; i<result.size(); i++) {
+            answer += result.get(i).getScore();
+            list.getData().get(i).setScoresum(answer);
+        }
+        return list;
+    }
 }
