@@ -24,7 +24,6 @@ public class adminMemberCreateService {
     public void 어드민회원() throws Exception {
         //given
 
-
         //when
 
 
