@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
+        /*
 @SpringBootTest
 @Transactional
 public class adminMemberCreateService {
@@ -16,6 +16,7 @@ public class adminMemberCreateService {
     MemberCreateService memberCreateService;
     @Autowired
     MemberRepository memberRepository;
+
 
 
     @Rollback(value = false)
@@ -35,3 +36,6 @@ public class adminMemberCreateService {
 
     }
 }
+
+
+         */
