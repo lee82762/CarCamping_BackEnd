@@ -44,11 +44,12 @@ public class PointController {
     public Result getByIDDesc(@RequestHeader("token") String token){
         jwtService.isUsable(token);
         Member member=jwtService.findMemberByToken(token);
+        List<Point> result1= pointService.getAllPointList(member.getId());
         List<Point> result= pointService.getAllPointListDesc(member.getId());
         ListResult<ResponsePointDto> list=responseService.getListResult(result.stream().map(ResponsePointDto::convertToPointDto).collect(Collectors.toList()));
         int answer=0;
-        for(int i=0; i<result.size(); i++) {
-            answer += result.get(i).getScore();
+        for(int i=result1.size()-1; i>=0; i--) {
+            answer += result1.get(i).getScore();
             list.getData().get(i).setScoresum(answer);
         }
         return list;
