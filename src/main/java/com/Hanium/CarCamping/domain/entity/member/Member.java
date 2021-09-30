@@ -37,9 +37,9 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer",orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
-    @OneToMany(mappedBy="owner")
+    @OneToMany(mappedBy="owner",orphanRemoval = true)
     private List<Point> pointList=new ArrayList<>();
     private String profile;
     @Builder
