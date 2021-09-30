@@ -22,7 +22,12 @@ public class adminMemberCreateService {
     @Test
     public void 어드민회원() throws Exception {
         //given
-
+        createDto.builder()
+                .email("admin")
+                .password("chabakrini1234")
+                .nickname("관리자")
+        memberCreateService.createAdminMember()
+                
         //when
 
 
