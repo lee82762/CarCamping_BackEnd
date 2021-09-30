@@ -7,7 +7,6 @@ import com.Hanium.CarCamping.Exception.NoSuchReviewException;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.Review_Member;
 import com.Hanium.CarCamping.domain.entity.member.Member;
-import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewMemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
@@ -44,9 +43,7 @@ public Long createReviewMember(Long review_id, String email, int i) {
     Review_Member save = reviewMemberRepository.save(review_member);
     review.getParticipants().add(save);
     pointService.create(member,"리뷰 평가 참여",2);
-    if (member.getRole() != Role.ADMIN) {
-        redisTemplate.opsForZSet().add("ranking", member.getNickname(), member.getPoint());
-    }
+    redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
     return save.getReview_member_id();
 
 }

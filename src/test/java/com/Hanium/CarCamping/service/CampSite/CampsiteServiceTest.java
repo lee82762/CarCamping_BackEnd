@@ -27,7 +27,7 @@ class CampsiteServiceTest {
     @Autowired MemberRepository memberRepository;
     @Autowired CampsiteService campsiteService;
 
-/*
+
     @Test
     public void 검색테스트() throws Exception {
         //given
@@ -41,7 +41,7 @@ class CampsiteServiceTest {
         //then
 
     }
-
+/*
     @Test
     public void 차박지_등록() throws Exception {
         //given

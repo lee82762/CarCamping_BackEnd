@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.domain.dto.waitingcampsite.ResponseWaitingCampSiteD
 import com.Hanium.CarCamping.domain.dto.waitingcampsite.ResponseWaitingCampSiteListDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.WaitingCampSite;
-import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
@@ -35,9 +34,7 @@ public class WaitingCampSiteService {
         campSiteRepository.save(campSite);
         waitingCampSiteRepository.delete(waitingCampSite);
         pointService.create(campSite.getRegistrant(),"차박지 등록",100);
-        if (campSite.getRegistrant().getRole() != Role.ADMIN) {
-            redisTemplate.opsForZSet().add("ranking",campSite.getRegistrant().getNickname(), campSite.getRegistrant().getPoint());
-        }
+        redisTemplate.opsForZSet().add("ranking",campSite.getRegistrant().getNickname(), campSite.getRegistrant().getPoint());
     }
     @Transactional
     public void deleteWaitingCampSite(Long waitingCampSite_id) {
