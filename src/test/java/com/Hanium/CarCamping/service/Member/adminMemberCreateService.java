@@ -27,7 +27,7 @@ public class adminMemberCreateService {
                 .password("chabakrini1234")
                 .nickname("관리자")
         memberCreateService.createAdminMember()
-                
+
         //when
 
 
