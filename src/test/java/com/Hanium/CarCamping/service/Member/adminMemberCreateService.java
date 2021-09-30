@@ -1,6 +1,7 @@
 package com.Hanium.CarCamping.service.Member;
 
 import com.Hanium.CarCamping.domain.dto.member.createDto;
+import com.Hanium.CarCamping.domain.dto.member.getDto;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,12 @@ public class adminMemberCreateService {
     @Test
     public void 어드민회원() throws Exception {
         //given
-        createDto.builder()
+        createDto build = createDto.builder()
                 .email("admin")
                 .password("chabakrini1234")
                 .nickname("관리자")
-        memberCreateService.createAdminMember()
+                .build();
+        memberCreateService.createAdminMember(build);
 
         //when
 
