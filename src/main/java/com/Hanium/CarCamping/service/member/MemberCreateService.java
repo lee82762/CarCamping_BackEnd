@@ -35,5 +35,17 @@ public class MemberCreateService {
         redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return getDto.toDto(member);
     }
+    public getDto createAdminMember(createDto memberCreateDto) {
+        if(memberRepository.existsByEmail(memberCreateDto.getEmail()))
+            throw new DuplicatedEmailException();
+        if (memberRepository.existsByNickname((memberCreateDto.getNickname()))) {
+            throw new DuplicatedNickNameException();
+        }
+        memberCreateDto.setPassword(passwordEncoder.encode(memberCreateDto.getPassword()));
+        Member result = memberCreateDto.of();
+        result.setRole(Role.ADMIN);
+        Member member = memberRepository.save(result);
+        return getDto.toDto(member);
+    }
 
 }
