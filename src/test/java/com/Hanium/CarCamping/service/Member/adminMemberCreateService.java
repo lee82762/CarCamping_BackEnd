@@ -1,7 +1,6 @@
 package com.Hanium.CarCamping.service.Member;
 
 import com.Hanium.CarCamping.domain.dto.member.createDto;
-import com.Hanium.CarCamping.domain.dto.member.getDto;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.service.member.MemberCreateService;
 import org.junit.jupiter.api.Test;
