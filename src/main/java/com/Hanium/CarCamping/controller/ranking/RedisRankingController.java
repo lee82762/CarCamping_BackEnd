@@ -4,6 +4,7 @@ import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.dto.member.ResponseRankingDto;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.service.Ranking.RankingService;
 import com.Hanium.CarCamping.service.Reponse.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.message.StringFormattedMessage;
@@ -20,27 +21,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class RedisRankingController {
-    private final RedisTemplate redisTemplate;
     private final ResponseService responseService;
-    private final JwtService jwtService;
+    private final RankingService rankingService;
 
     @GetMapping("/ranking")
     public Result getRankingList() {
-        String key = "ranking";
-        ZSetOperations<String, String> stringStringZSetOperations = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(key, 0, 10);
-        List<ResponseRankingDto> collect = typedTuples.stream().map(ResponseRankingDto::convertToResponseRankingDto).collect(Collectors.toList());
-        return responseService.getListResult(collect);
+        return responseService.getListResult(rankingService.getRankingList());
     }
     @GetMapping("/myRank")
     public Result getMyRank(@RequestHeader("token") String token) {
-        Long ranking=0L;
-        Double ranking1 = redisTemplate.opsForZSet().score("ranking", jwtService.findMemberByToken(token).getNickname());
-        Set<String> ranking2 = redisTemplate.opsForZSet().reverseRangeByScore("ranking", ranking1, ranking1, 0, 1);
-        for (String s : ranking2) {
-            ranking = redisTemplate.opsForZSet().reverseRank("ranking", s);
-        }
-        return responseService.getSingleResult(ranking+1);
+        return responseService.getSingleResult(rankingService.getMyRank(token));
     }
 
 }
