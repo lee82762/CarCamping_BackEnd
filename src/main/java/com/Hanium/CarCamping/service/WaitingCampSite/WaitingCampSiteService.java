@@ -35,9 +35,6 @@ public class WaitingCampSiteService {
         campSiteRepository.save(campSite);
         waitingCampSiteRepository.delete(waitingCampSite);
         pointService.create(campSite.getRegistrant(),"차박지 등록",100);
-        if (campSite.getRegistrant().getRole() != Role.ADMIN) {
-            redisTemplate.opsForZSet().add("ranking",campSite.getRegistrant().getNickname(), campSite.getRegistrant().getPoint());
-        }
     }
     @Transactional
     public void deleteWaitingCampSite(Long waitingCampSite_id) {

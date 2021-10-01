@@ -83,9 +83,6 @@ public class ReviewService {
         }
         review.getCampSite().changeScore(review.getScore(),-1);
         pointService.create(member,"리뷰 삭제",-10);
-        if (member.getRole() != Role.ADMIN) {
-            redisTemplate.opsForZSet().add("ranking", member.getNickname(), member.getPoint());
-        }
         reviewRepository.delete(review);
     }
     public List<Review> mostRecommendedTop3Review(Long campsite_id) {
