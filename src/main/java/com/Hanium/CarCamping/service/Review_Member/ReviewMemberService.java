@@ -43,7 +43,7 @@ public Long createReviewMember(Long review_id, String email, int i) {
     Review_Member save = reviewMemberRepository.save(review_member);
     review.getParticipants().add(save);
     pointService.create(member,"리뷰 평가 참여",2);
-    redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
+
     return save.getReview_member_id();
 
 }

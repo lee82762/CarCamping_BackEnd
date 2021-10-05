@@ -79,8 +79,9 @@ public class ReviewService {
             throw new NotReviewWriterException("리뷰 작성자가 아닙니다");
         }
         review.getCampSite().changeScore(review.getScore(),-1);
-        pointService.create(result,"리뷰 삭제",-10);
-        redisTemplate.opsForZSet().add("ranking",result.getNickname(), result.getPoint());
+
+        pointService.create(member,"리뷰 삭제",-10);
+
         reviewRepository.delete(review);
     }
     public List<Review> mostRecommendedTop3Review(Long campsite_id) {
