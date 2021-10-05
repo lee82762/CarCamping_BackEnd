@@ -6,7 +6,6 @@ import com.Hanium.CarCamping.domain.dto.waitingcampsite.ResponseWaitingCampSiteD
 import com.Hanium.CarCamping.domain.dto.waitingcampsite.ResponseWaitingCampSiteListDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.WaitingCampSite;
-import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;

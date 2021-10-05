@@ -10,7 +10,6 @@ import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
-import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
@@ -39,9 +38,7 @@ public class ReviewService {
         Review save = reviewRepository.save(Review.createReview(createReviewDto, member, campSite));
         campSite.changeScore(save.getScore(),1);
         pointService.create(member,"리뷰 등록",10);
-        if (member.getRole() != Role.ADMIN) {
-            redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
-        }
+        redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return save.getReview_id();
     }
 
@@ -77,12 +74,14 @@ public class ReviewService {
     @Transactional
     public void deleteReview(String email,Long review_id) {
         Review review= reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
-        Member member= memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
-        if (!member.getId().equals(review.getWriter().getId())) {
+        Member result= memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        if (!result.getId().equals(review.getWriter().getId())) {
             throw new NotReviewWriterException("리뷰 작성자가 아닙니다");
         }
         review.getCampSite().changeScore(review.getScore(),-1);
+
         pointService.create(member,"리뷰 삭제",-10);
+
         reviewRepository.delete(review);
     }
     public List<Review> mostRecommendedTop3Review(Long campsite_id) {
