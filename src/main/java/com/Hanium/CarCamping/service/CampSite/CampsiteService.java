@@ -9,6 +9,7 @@ import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.WaitingCampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
@@ -46,13 +47,15 @@ public class CampsiteService {
                 throw new DuplicateCampSiteException("이미 등록되어있는 차박지입니다");
             }
         }
-        WaitingCampSite save = waitingCampSiteRepository.save(WaitingCampSite.createCampSite(createCampSiteDto, member,getGeoDataByAddress(createCampSiteDto.getAddress())));
-        //pointService.create(member,"차박지 등록",100);
-        //redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
-        return save.getWaitingCampSite_id();
+        if (member.getRole() == Role.USER) {
+            WaitingCampSite save = waitingCampSiteRepository.save(WaitingCampSite.createCampSite(createCampSiteDto, member, getGeoDataByAddress(createCampSiteDto.getAddress())));
+            return save.getWaitingCampSite_id();
+        } else {
+            CampSite campSite = CampSite.convertToCampSite(WaitingCampSite.createCampSite(createCampSiteDto, member, getGeoDataByAddress(createCampSiteDto.getAddress())));
+            return campSite.getCampsite_id();
+        }
+
     }
-
-
 
     public CampSite findById(Long id) {
         return campSiteRepository.findById(id).orElseThrow(NoSuchCampSiteException::new);

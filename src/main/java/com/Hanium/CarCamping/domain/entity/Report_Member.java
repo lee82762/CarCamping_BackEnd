@@ -27,7 +27,6 @@ public class  Report_Member {
         Report_Member reportMember = new Report_Member();
         reportMember.member_id=member;
         reportMember.setReview_id(review);
-        review.setReportMember(reportMember);
         return reportMember;
     }
 
