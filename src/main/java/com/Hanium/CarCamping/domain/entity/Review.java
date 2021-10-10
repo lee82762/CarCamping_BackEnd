@@ -46,7 +46,7 @@ public class Review {
     private Integer recommend;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Member> reporters = new HashSet<>();
+    private Set<Report_Member> reporters = new HashSet<>();
 
     private Integer reportCount;
 
@@ -59,8 +59,8 @@ public class Review {
         this.writer=writer;
         writer.getReviewList().add(this);
     }
-    public void setReportMember(Member member) {
-        this.reporters.add(member);
+    public void setReportMember(Report_Member reportMember) {
+        this.reporters.add(reportMember);
         this.reportCount+=1;
     }
     public void resetReportCount() {

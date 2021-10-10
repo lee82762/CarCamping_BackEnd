@@ -13,6 +13,7 @@ import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
+import com.Hanium.CarCamping.service.Report_Member.ReportMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
+    private final ReportMemberService reportMemberService;
     @Transactional
     public Long saveReview(CreateReviewDto createReviewDto, String email, Long campSite_id) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
@@ -109,10 +111,7 @@ public class ReviewService {
     public void reportReview(String email,Long review_id) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         Review review=reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
-        if (review.getReporters().contains(member)) {
-            throw new alreadyReportReviewException();
-        }
-        review.setReportMember(member);
+        reportMemberService.report(member,review);
     }
     @Transactional
     public void adminReviewDelete(String email,Long review_id) {
