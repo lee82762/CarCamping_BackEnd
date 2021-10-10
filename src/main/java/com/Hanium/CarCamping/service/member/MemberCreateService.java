@@ -35,5 +35,12 @@ public class MemberCreateService {
         redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return getDto.toDto(member);
     }
+    public getDto createAdminMember(createDto memberCreateDto){
+        memberCreateDto.setPassword(passwordEncoder.encode(memberCreateDto.getPassword()));
+        Member result = memberCreateDto.of();
+        result.setRole(Role.ADMIN);
+        Member member = memberRepository.save(result);
+        return getDto.toDto(member);
+    }
 
 }

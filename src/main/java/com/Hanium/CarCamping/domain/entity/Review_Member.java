@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review_Member {
+public class  Review_Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long review_member_id;

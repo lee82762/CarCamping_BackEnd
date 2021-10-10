@@ -3,6 +3,7 @@ package com.Hanium.CarCamping.domain.entity;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,6 +45,11 @@ public class Review {
 
     private Integer recommend;
 
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Member> reporters = new HashSet<>();
+
+    private Integer reportCount;
+
     //연관관계 메서드
     public void setCampSite(CampSite campSite) {
         this.campSite=campSite;
@@ -52,6 +58,13 @@ public class Review {
     public void setWriter(Member writer) {
         this.writer=writer;
         writer.getReviewList().add(this);
+    }
+    public void setReportMember(Member member) {
+        this.reporters.add(member);
+        this.reportCount+=1;
+    }
+    public void resetReportCount() {
+        this.reportCount=0;
     }
 
     public static Review createReview(CreateReviewDto createReviewDto,Member writer,CampSite campSite) {
@@ -64,6 +77,7 @@ public class Review {
         review.images= createReviewDto.getImages();
         review.setCampSite(campSite);
         review.setWriter(writer);
+        review.reportCount=0;
         return review;
     }
     public void changeRecommend(int i) {
