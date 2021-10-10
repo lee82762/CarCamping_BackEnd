@@ -22,6 +22,7 @@ public class ReportMemberService {
         if (review.getReporters().contains(report_member)) {
             throw new alreadyReportReviewException();
         }
+        review.setReportMember(report_member);
         reportMemberRepository.save(report_member);
     }
 }
