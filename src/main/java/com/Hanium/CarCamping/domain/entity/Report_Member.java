@@ -16,11 +16,11 @@ public class  Report_Member {
     private Long report_member_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="report_review_id")
-    private Review report_review_id;
+    @JoinColumn(name="review_id")
+    private Review review_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="report_member_id")
+    @JoinColumn(name="member_id")
     private Member member_id;
 
     public static Report_Member createReport_Member(Review review, Member member) {
@@ -32,13 +32,13 @@ public class  Report_Member {
     }
 
     public void setReview_id(Review review) {
-        this.report_review_id=review;
+        this.review_id=review;
     }
 
     @Override
     public boolean equals(Object o) {
         Report_Member m=(Report_Member) o;
-        if (this.member_id.getId().equals(m.member_id.getId()) && this.report_review_id.getReview_id().equals(m.report_review_id.getReview_id())) {
+        if (this.member_id.getId().equals(m.member_id.getId()) && this.review_id.getReview_id().equals(m.review_id.getReview_id())) {
             return true;
         } else {
             return false;
@@ -49,7 +49,7 @@ public class  Report_Member {
     public int hashCode() {
         final int PRIME=31;
         int result=1;
-        result= (int) (report_review_id.getReview_id()+member_id.getId());
+        result= (int) (review_id.getReview_id()+member_id.getId());
         return result;
     }
 }
