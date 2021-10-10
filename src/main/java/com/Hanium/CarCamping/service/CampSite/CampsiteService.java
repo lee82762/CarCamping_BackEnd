@@ -35,7 +35,6 @@ public class CampsiteService {
     private final MemberRepository memberRepository;
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
-    private final RedisTemplate redisTemplate;
     private final WaitingCampSiteRepository waitingCampSiteRepository;
 
     @Transactional
@@ -98,7 +97,6 @@ public class CampsiteService {
             throw new NotCampSiteRegisterException("차박지 등록자가 아닙니다");
         } else {
             pointService.create(member,"차박지 삭제",-100);
-            redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
             campSiteRepository.delete(campSite);
         }
     }

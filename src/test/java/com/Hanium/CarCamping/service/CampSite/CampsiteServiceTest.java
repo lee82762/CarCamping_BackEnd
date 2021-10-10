@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.Hanium.CarCamping.domain.Region.경기도;
 import static org.assertj.core.api.Assertions.*;
-
+/*
 @SpringBootTest
 @Transactional
 class CampsiteServiceTest {
@@ -41,7 +41,7 @@ class CampsiteServiceTest {
         //then
 
     }
-/*
+
     @Test
     public void 차박지_등록() throws Exception {
         //given
@@ -151,9 +151,11 @@ class CampsiteServiceTest {
         return memberRepository.findByEmail(member.getEmail()).orElseThrow();
     }
 
- */
+
 
 
 
 
 }
+
+ */

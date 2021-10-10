@@ -65,6 +65,13 @@ public class CustomExceptionHandler {
     public Result AlreadyParticipateException() {
         return responseService.getFailResult(-1008, "이미 평가한 리뷰입니다.");
     }
+    @ExceptionHandler(alreadyReportReviewException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result alreadyReportReviewException() {
+        return responseService.getFailResult(-1009, "이미 신고한 리뷰입니다.");
+    }
+
+
 
     //인증관련
     @ExceptionHandler(AccessDeniedException.class)

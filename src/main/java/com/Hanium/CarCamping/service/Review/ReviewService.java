@@ -1,15 +1,14 @@
 package com.Hanium.CarCamping.service.Review;
 
-import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
-import com.Hanium.CarCamping.Exception.NoSuchMemberException;
-import com.Hanium.CarCamping.Exception.NoSuchReviewException;
-import com.Hanium.CarCamping.Exception.NotReviewWriterException;
+import com.Hanium.CarCamping.Exception.*;
 import com.Hanium.CarCamping.domain.dto.review.CreateReviewDto;
 import com.Hanium.CarCamping.domain.dto.review.ResponseOneReviewDto;
+import com.Hanium.CarCamping.domain.dto.review.ResponseReportReviewDto;
 import com.Hanium.CarCamping.domain.dto.review.ResponseReviewDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
 import com.Hanium.CarCamping.domain.entity.Review;
 import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.ReviewRepository;
@@ -30,7 +29,6 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
-    private final RedisTemplate redisTemplate;
     @Transactional
     public Long saveReview(CreateReviewDto createReviewDto, String email, Long campSite_id) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
@@ -38,7 +36,6 @@ public class ReviewService {
         Review save = reviewRepository.save(Review.createReview(createReviewDto, member, campSite));
         campSite.changeScore(save.getScore(),1);
         pointService.create(member,"리뷰 등록",10);
-        redisTemplate.opsForZSet().add("ranking",member.getNickname(), member.getPoint());
         return save.getReview_id();
     }
 
@@ -80,7 +77,7 @@ public class ReviewService {
         }
         review.getCampSite().changeScore(review.getScore(),-1);
 
-        pointService.create(member,"리뷰 삭제",-10);
+        pointService.create(result,"리뷰 삭제",-10);
 
         reviewRepository.delete(review);
     }
@@ -107,6 +104,42 @@ public class ReviewService {
     public List<ResponseReviewDto> getMyReviewScore(String email){
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         return member.getReviewList().stream().sorted(((o1, o2) -> o1.getScore().compareTo(o2.getScore()))).map(ResponseReviewDto::convertToReviewDto).collect(Collectors.toList());
+    }
+    @Transactional
+    public void reportReview(String email,Long review_id) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        Review review=reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
+        if (review.getReporters().contains(member)) {
+            throw new alreadyReportReviewException();
+        }
+        review.setReportMember(member);
+    }
+    @Transactional
+    public void adminReviewDelete(String email,Long review_id) {
+        Member admin = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        Review review=reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
+        if (admin.getRole() != Role.ADMIN) {
+            throw new AuthenticationEntryPointException();
+        }
+        Member writer = review.getWriter();
+        pointService.create(writer,"리뷰 신고에 의한 강제 삭제",-50);
+        reviewRepository.delete(review);
+    }
+    public List<ResponseReportReviewDto> getReportedReviewList() {
+        List<Review> reportedReview = reviewRepository.findReportedReview();
+        List<ResponseReportReviewDto> result=reportedReview.stream()
+                .map(ResponseReportReviewDto::convertToResponseReportReviewDto)
+                .collect(Collectors.toList());
+        return result;
+    }
+    @Transactional
+    public void resetReviewReportCount(String email,Long review_id) {
+        Member admin = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        Review review=reviewRepository.findById(review_id).orElseThrow(NoSuchReviewException::new);
+        if (admin.getRole() != Role.ADMIN) {
+            throw new AuthenticationEntryPointException();
+        }
+        review.resetReportCount();
     }
 
 }
