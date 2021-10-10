@@ -3,6 +3,7 @@ package com.Hanium.CarCamping.controller.notice;
 import com.Hanium.CarCamping.config.security.jwt.JwtService;
 import com.Hanium.CarCamping.domain.dto.Notice.CreateNoticeDto;
 import com.Hanium.CarCamping.domain.dto.Notice.ResponseNoticeDto;
+import com.Hanium.CarCamping.domain.dto.Notice.ResponseOneNoticeDto;
 import com.Hanium.CarCamping.domain.dto.response.Result;
 import com.Hanium.CarCamping.domain.entity.Notice;
 import com.Hanium.CarCamping.service.Notice.NoticeService;
@@ -36,4 +37,10 @@ public class NoticeController {
         return responseService.getListResult(result.stream().map(ResponseNoticeDto::convertToNoticeDto).collect(Collectors.toList()));
     }
 
+    @GetMapping("/notice/{id}")
+    public Result getSingleCampSite(@RequestHeader("token") String token, @PathVariable Long id) {
+        jwtService.isUsable(token);
+        Notice notice = noticeService.findById(id);
+        return responseService.getSingleResult(ResponseOneNoticeDto.convertToNoticeDto(notice));
+    }
 }

@@ -1,5 +1,6 @@
 package com.Hanium.CarCamping.service.Notice;
 
+import com.Hanium.CarCamping.Exception.NoSuchNoticeException;
 import com.Hanium.CarCamping.Exception.NotAdminRegisterException;
 import com.Hanium.CarCamping.domain.dto.Notice.CreateNoticeDto;
 import com.Hanium.CarCamping.domain.entity.Notice;
@@ -29,6 +30,10 @@ public class NoticeService {
 
     public List<Notice> getAllNotice() {
         return noticeRepository.findAll();
+    }
+
+    public Notice findById(Long id) {
+        return noticeRepository.findById(id).orElseThrow(NoSuchNoticeException::new);
     }
 
 
