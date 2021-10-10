@@ -45,7 +45,7 @@ public class Review {
 
     private Integer recommend;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy="report_review_id",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Report_Member> reporters = new HashSet<>();
 
     private Integer reportCount;
