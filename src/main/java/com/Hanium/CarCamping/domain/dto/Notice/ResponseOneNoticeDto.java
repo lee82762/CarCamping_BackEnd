@@ -8,17 +8,19 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class ResponseNoticeDto {
+public class ResponseOneNoticeDto {
     private Long id;
     private String writer;
     private String title;
+    private String content;
     private LocalDateTime date;
 
-    public static ResponseNoticeDto convertToNoticeDto(Notice notice) {
-        return ResponseNoticeDto.builder()
+    public static ResponseOneNoticeDto convertToNoticeDto(Notice notice) {
+        return ResponseOneNoticeDto.builder()
                 .id(notice.getId())
                 .writer(notice.getWriter())
                 .title(notice.getTitle())
+                .content(notice.getContents())
                 .date(notice.getDate())
                 .build();
     }
