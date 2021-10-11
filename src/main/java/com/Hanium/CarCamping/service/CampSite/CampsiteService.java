@@ -17,7 +17,6 @@ import com.Hanium.CarCamping.service.Point.PointService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +51,8 @@ public class CampsiteService {
             return save.getWaitingCampSite_id();
         } else {
             CampSite campSite = CampSite.convertToCampSite(WaitingCampSite.createCampSite(createCampSiteDto, member, getGeoDataByAddress(createCampSiteDto.getAddress())));
-            return campSite.getCampsite_id();
+            CampSite save=campSiteRepository.save(campSite);
+            return save.getCampsite_id();
         }
 
     }
