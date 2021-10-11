@@ -29,7 +29,7 @@ public class NoticeService {
     }
 
     public List<Notice> getAllNotice() {
-        return noticeRepository.findAll();
+        return noticeRepository.findByDate();
     }
 
     public Notice findById(Long id) {

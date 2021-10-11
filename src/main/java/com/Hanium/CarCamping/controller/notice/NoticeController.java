@@ -23,7 +23,7 @@ public class NoticeController {
     private final ResponseService responseService;
 
     @PostMapping("/notice/register")
-    public Result registerReview(@RequestBody CreateNoticeDto createNoticeDto, @RequestHeader("token") String token) {
+    public Result registerNotice(@RequestBody CreateNoticeDto createNoticeDto, @RequestHeader("token") String token) {
         jwtService.isUsable(token);
         String name=jwtService.findMemberByToken(token).getNickname();
         noticeService.createNotice(createNoticeDto,name);
@@ -31,14 +31,14 @@ public class NoticeController {
     }
 
     @GetMapping("/notice/all")
-    public Result getReviewListByDateDOWN(@RequestHeader("token") String token) {
+    public Result getNoticeList(@RequestHeader("token") String token) {
         jwtService.isUsable(token);
         List<Notice> result = noticeService.getAllNotice();
         return responseService.getListResult(result.stream().map(ResponseNoticeDto::convertToNoticeDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/notice/{id}")
-    public Result getSingleCampSite(@RequestHeader("token") String token, @PathVariable Long id) {
+    public Result getSingleNotice(@RequestHeader("token") String token, @PathVariable Long id) {
         jwtService.isUsable(token);
         Notice notice = noticeService.findById(id);
         return responseService.getSingleResult(ResponseOneNoticeDto.convertToNoticeDto(notice));
