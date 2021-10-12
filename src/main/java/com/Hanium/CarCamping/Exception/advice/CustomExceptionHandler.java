@@ -70,6 +70,12 @@ public class CustomExceptionHandler {
     public Result alreadyReportReviewException() {
         return responseService.getFailResult(-1009, "이미 신고한 리뷰입니다.");
     }
+    @ExceptionHandler(NoSuchChangeRequestException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result NoSuchChangeRequestException() {
+        return responseService.getFailResult(-1010, "존재하지 않는 변경 요청입니다.");
+    }
+
 
 
 

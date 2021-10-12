@@ -91,4 +91,12 @@ public class CampSite {
             this.score=this.scoreSum/this.reviewNum;
         }
     }
+
+    public void change(ChangeCampSite changeCampSite) {
+        this.name = changeCampSite.getName();
+        this.explanation= changeCampSite.getExplanation();
+        this.images= changeCampSite.getImages();
+        this.videoLink= changeCampSite.getVideoLink();
+        this.facilities= changeCampSite.getFacilities();
+    }
 }

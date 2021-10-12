@@ -1,14 +1,11 @@
 package com.Hanium.CarCamping.domain.entity;
 
-import com.Hanium.CarCamping.domain.Region;
-import com.Hanium.CarCamping.domain.entity.member.Member;
+import com.Hanium.CarCamping.domain.dto.campsite.ChangeCampSiteDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,15 +16,7 @@ public class ChangeCampSite {
 
     private Long campsite_id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String address;
-
-
-    @Enumerated(value = EnumType.STRING)
-    private Region region;
 
     private String explanation;
 
@@ -35,14 +24,16 @@ public class ChangeCampSite {
 
     private String videoLink;
 
-
-    //컬럼 추가
-    @Column(nullable = false)
-    private String lat;
-
-    @Column(nullable = false)
-    private  String lng;
-
     private String facilities;
 
+    public static ChangeCampSite createChangeCampSite(ChangeCampSiteDto changeCampSiteDto) {
+        ChangeCampSite changeCampSite=new ChangeCampSite();
+        changeCampSite.campsite_id=changeCampSiteDto.getCampsite_id();
+        changeCampSite.name=changeCampSiteDto.getName();
+        changeCampSite.explanation=changeCampSiteDto.getExplanation();
+        changeCampSite.images=changeCampSiteDto.getImages();
+        changeCampSite.videoLink=changeCampSiteDto.getVideoLink();
+        changeCampSite.facilities=changeCampSiteDto.getFacilities();
+        return changeCampSite;
+    }
 }
