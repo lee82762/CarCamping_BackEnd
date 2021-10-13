@@ -14,6 +14,7 @@ public class ResponseChangeCampSiteDto {
     private Long changeCampSite_id;
     private Long campsite_id;
     private String name;
+    private String address;
     private String explanation;
     private String images;
     private String videoLink;
@@ -24,6 +25,7 @@ public class ResponseChangeCampSiteDto {
                 .changeCampSite_id(changeCampSite.getChangeCampSite_id())
                 .campsite_id(changeCampSite.getCampsite_id())
                 .name(changeCampSite.getName())
+                .address(changeCampSite.getAddress())
                 .explanation(changeCampSite.getExplanation())
                 .images(changeCampSite.getImages())
                 .videoLink(changeCampSite.getVideoLink())
