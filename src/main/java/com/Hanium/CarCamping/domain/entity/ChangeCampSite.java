@@ -32,7 +32,7 @@ public class ChangeCampSite {
         ChangeCampSite changeCampSite=new ChangeCampSite();
         changeCampSite.campsite_id=changeCampSiteDto.getCampsite_id();
         changeCampSite.name=changeCampSiteDto.getName();
-        changeCampSite.address= changeCampSite.getAddress();
+        changeCampSite.address= changeCampSiteDto.getAddress();
         changeCampSite.explanation=changeCampSiteDto.getExplanation();
         changeCampSite.images=changeCampSiteDto.getImages();
         changeCampSite.videoLink=changeCampSiteDto.getVideoLink();
