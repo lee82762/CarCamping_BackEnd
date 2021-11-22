@@ -1,16 +1,16 @@
 package com.Hanium.CarCamping.service.CampSite;
 
-import com.Hanium.CarCamping.Exception.DuplicateCampSiteException;
-import com.Hanium.CarCamping.Exception.NoSuchCampSiteException;
-import com.Hanium.CarCamping.Exception.NoSuchMemberException;
-import com.Hanium.CarCamping.Exception.NotCampSiteRegisterException;
+import com.Hanium.CarCamping.Exception.*;
 import com.Hanium.CarCamping.domain.Region;
+import com.Hanium.CarCamping.domain.dto.campsite.ChangeCampSiteDto;
 import com.Hanium.CarCamping.domain.dto.campsite.CreateCampSiteDto;
 import com.Hanium.CarCamping.domain.entity.CampSite;
+import com.Hanium.CarCamping.domain.entity.ChangeCampSite;
 import com.Hanium.CarCamping.domain.entity.WaitingCampSite;
 import com.Hanium.CarCamping.domain.entity.member.Member;
 import com.Hanium.CarCamping.domain.entity.member.Role;
 import com.Hanium.CarCamping.repository.CampSiteRepository;
+import com.Hanium.CarCamping.repository.ChangeCampSiteRepository;
 import com.Hanium.CarCamping.repository.MemberRepository;
 import com.Hanium.CarCamping.repository.WaitingCampSiteRepository;
 import com.Hanium.CarCamping.service.Point.PointService;
@@ -36,6 +36,7 @@ public class CampsiteService {
     private final CampSiteRepository campSiteRepository;
     private final PointService pointService;
     private final WaitingCampSiteRepository waitingCampSiteRepository;
+    private final ChangeCampSiteRepository changeCampSiteRepository;
 
     @Transactional
     public Long saveCampSite(CreateCampSiteDto createCampSiteDto, String email)   {
@@ -179,36 +180,28 @@ public class CampsiteService {
     public List<CampSite> getCampSiteBySearchWordAndRegion(String word,Region region) {
         return campSiteRepository.findByNameContainingAndRegionOrderByScoreDesc(word,region);
     }
-/*    public  Float[] findGeoPoint(String location) {
-
-        if (location == null)
-            return null;
-
-        // setAddress : 변환하려는 주소 (경기도 성남시 분당구 등)
-        // setLanguate : 인코딩 설정
-        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(location).setLanguage("ko").getGeocoderRequest();
-
-        try {
-            Geocoder geocoder = new Geocoder();
-            GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
-
-            if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty()) {
-
-                GeocoderResult geocoderResult=geocoderResponse.getResults().iterator().next();
-                LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
-
-                Float[] coords = new Float[2];
-                coords[0] = latitudeLongitude.getLat().floatValue();
-                coords[1] = latitudeLongitude.getLng().floatValue();
-                System.out.println(coords[0]);
-                System.out.println(coords[1]);
-                return coords;
-
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    @Transactional
+    public void createChange(String email,ChangeCampSiteDto changeCampSiteDto) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
+        ChangeCampSite changeCampSite = ChangeCampSite.createChangeCampSite(changeCampSiteDto);
+        if (member.getRole() == Role.USER) {
+            changeCampSiteRepository.save(changeCampSite);
+        } else {
+            CampSite campSite = campSiteRepository.findById(changeCampSite.getCampsite_id()).orElseThrow(NoSuchCampSiteException::new);
+            campSite.change(changeCampSite);
         }
-        return null;
-    }*/
+    }
+    @Transactional
+    public void applyChange(Long changeCampSite_id) {
+        ChangeCampSite changeCampSite = changeCampSiteRepository.findById(changeCampSite_id).orElseThrow(NoSuchChangeRequestException::new);
+        CampSite campSite = campSiteRepository.findById(changeCampSite.getCampsite_id()).orElseThrow(NoSuchCampSiteException::new);
+        campSite.change(changeCampSite);
+        changeCampSiteRepository.delete(changeCampSite);
+    }
+    @Transactional
+    public void rejectChange(Long changeCampSite_id) {
+        ChangeCampSite changeCampSite = changeCampSiteRepository.findById(changeCampSite_id).orElseThrow(NoSuchChangeRequestException::new);
+        changeCampSiteRepository.delete(changeCampSite);
+    }
 
 }
